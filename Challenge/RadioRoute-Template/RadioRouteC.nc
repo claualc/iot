@@ -99,8 +99,8 @@ implementation {
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
-      call Timer0.startPeriodic(250);
-      call Timer1.startPeriodic(250);
+      call Timer0.startPeriodic(1000);
+      call Timer1.startPeriodic(500);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -125,7 +125,7 @@ implementation {
       msg->src = 1;
       msg->dest = 7;
 
-      dbg("boot","\nSENDING FRIST PACKET\n\n");
+      dbg("boot","\nSENDING FIRST PACKET\n\n");
       actual_send(AM_BROADCAST_ADDR,&packet);
     }
   }
