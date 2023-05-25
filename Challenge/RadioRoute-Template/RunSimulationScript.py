@@ -59,18 +59,18 @@ t.addChannel("init",out);
 for i in range(1, 8):
     print ">>>Creating node:",i;
     node =t.getNode(i);
-	time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
-	node.bootAtTime(time);
-	print ">>>Will boot at time",  time/t.ticksPerSecond(), "[sec]";
+    time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
+    node.bootAtTime(time);
+    print ">>>Will boot at time",  time/t.ticksPerSecond(), "[sec]";
 
 print "Creating radio channels..."
 f = open(topofile, "r");
 lines = f.readlines()
 for line in lines:
-  s = line.split()
-  if (len(s) > 0):
-    print ">>>Setting radio channel from node ", s[0], " to node ", s[1], " with gain ", s[2], " dBm"
-    radio.add(int(s[0]), int(s[1]), float(s[2]))
+    s = line.split()
+    if (len(s) > 0):
+        print ">>>Setting radio channel from node ", s[0], " to node ", s[1], " with gain ", s[2], " dBm"
+        radio.add(int(s[0]), int(s[1]), float(s[2]))
 
 
 #creation of channel model
@@ -103,7 +103,7 @@ for i in range(1, 8):
 print "Start simulation with TOSSIM! \n\n\n";
 
 for i in range(0,1200):
-	t.runNextEvent()
+    t.runNextEvent()
 	
 print "\n\n\nSimulation finished!";
 
