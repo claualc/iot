@@ -120,7 +120,7 @@ implementation {
 		  return;
     }
     rmc->value = 5;
-    actual_send(AM_BROADCAST_ADDR, &rcm)
+    actual_send(AM_BROADCAST_ADDR, rcm)
   }
   
   bool actual_send (uint16_t address, message_t* packet){
