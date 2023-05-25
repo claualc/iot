@@ -19,6 +19,7 @@ module RadioRouteC @safe() {
     interface Leds;
     //interface for timers
     interface Timer<TMilli> as Timer0;
+    interface Timer<TMilli> as Timer1;
     //interfaces for communication
     interface SplitControl as AMControl;
     interface AMSend;
@@ -109,15 +110,21 @@ implementation {
   	*/
   	actual_send(queue_addr, &queued_packet);
   }
+
+  event void Timer1.fired() {
+    actual_send()
+  }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(packet, sizeof(radio_route_msg_t));
+    radio_route_msg_t* &packet = (radio_route_msg_t*)call Packet.getPayload(packet, sizeof(radio_route_msg_t));
     if (rcm == NULL) {
       return;
     }
 
     if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\n..::AMSend.send to %d\n\n",queue_addr);	
+      dbg("radio_send", "\n..::AMSend.send\n");	
+      dbg("radio_send", "\t\tvalue:  %d\n\n",packet-> value);	
+      dbg("radio_send", "\t\tto:  %d\n\n",queue_addr);	
     }
   }
 
