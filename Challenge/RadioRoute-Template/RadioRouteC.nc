@@ -83,7 +83,7 @@ implementation {
 
  /****** EVENTS *****/
   event void Boot.booted() {
-    dbg("boot","\nApplication booted.\n\n");
+    dbg("boot","\nNode booted.\n\n");
     call AMControl.start();
   }
 
@@ -110,6 +110,7 @@ implementation {
     if (msg == NULL) {
 		  return;
     }
+    msg->value = 253;
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
 		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY");	
     }
@@ -123,14 +124,13 @@ implementation {
     dbg("boot", "\nRadio stopped!\n");
   }
   
-  event message_t* Receive.receive(message_t* bufPtr, 
-				   void* payload, uint8_t len) {
-	/*
-	* Parse the receive packet.
-	* Implement all the functionalities
-	* Perform the packet send using the generate_send function if needed
-	* Implement the LED logic and print LED status on Debug
-	*/
+  event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
+    if (len != sizeof(radio_toss_msg_t)) {return bufPtr;}
+    else {
+      radio_toss_msg_t* msg = (radio_toss_msg_t*)payload;
+      
+      dbg("radio_rec", "..::Receive.receive: value %d\n",msg->value);
+    }
 	
     
   }
