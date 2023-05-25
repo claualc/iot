@@ -149,9 +149,9 @@ implementation {
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
-    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+      radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %d to  %u\n", TOS_NODE_ID, msg->dest);
+      dbg("boot","..::SENDING from %u to  %u type  %u\n", msg->src, msg->dest,msg->type);
 
       /*
         if destination address not in actual routing_table
@@ -198,6 +198,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
+      radio_route_msg_t* packet = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
 
       dbg("radio_rec", "..::RECEIVE at %d type %u\n",TOS_NODE_ID, msg->type);
 
@@ -214,10 +215,10 @@ implementation {
           this is the node the ROUTE_REQ was looking for
           Generate ROUTE_REPLY
           */
-          msg->type = ROUTE_REP;
-          msg->dest = msg->src;
-          msg->src = TOS_NODE_ID;
-          msg->value = 0;
+          packet->type = ROUTE_REP;
+          packet->dest = msg->src;
+          packet->src = TOS_NODE_ID;
+          packet->value = 0;
           generate_send(msg->dest,bufPtr,ROUTE_REP);
           dbg("radio_rec", "\t\tROUTE_REQ arrived to destination node %d\n", TOS_NODE_ID);
           dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
@@ -234,12 +235,12 @@ implementation {
             */
 
             // create ROUTE_REP with actual routing table info
-            msg->type = ROUTE_REP;
-            msg->value = rt_hot_count[msg->dest-1];
+            packet->type = ROUTE_REP;
+            packet->value = rt_hot_count[msg->dest-1];
             // src becomes the dest and the dest the src
             temp_src=msg->src;
-            msg->src = msg->dest;
-            msg->dest = temp_src;
+            packet->src = msg->dest;
+            packet->dest = temp_src;
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
             dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
           } else {
@@ -282,7 +283,7 @@ implementation {
           // //   generate_send(msg->dest,bufPtr,msg->type);
           // // }
           
-          return bufPtr;
+          return packet;
       }
     }
   }
