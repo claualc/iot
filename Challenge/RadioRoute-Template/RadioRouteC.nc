@@ -132,7 +132,7 @@ implementation {
   
   bool actual_send(uint16_t address, message_t* packet){
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\n..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
+      dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
     }
   }
 
@@ -152,7 +152,7 @@ implementation {
     dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
-      radio_route_msg_t* msg = (radio_route_msg_t*)payload;
+      radio_route_msg_t* msg = (radio_route_msg_t*)bufPtr;
 
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
       dbg("radio_pack",">>>Pack \n \t type %d \n", msg->type);
