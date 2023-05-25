@@ -186,7 +186,7 @@ implementation {
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
-    dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %u type %u\n", sent->src, sent->dest,sent->type);	
+    //dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %u type %u\n", sent->src, sent->dest,sent->type);	
   }
 
   event void AMControl.stopDone(error_t err) {
