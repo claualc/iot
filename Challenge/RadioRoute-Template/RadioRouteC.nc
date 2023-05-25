@@ -36,18 +36,22 @@ implementation {
   message_t queued_packet;
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
+
+  /*****  ROUTING TABLE  *****/
+  uint16_t rt_dest[7];
+  uint16_t rt_next_hop[7];
+  uint16_t rt_hot_count[7];
   
   /*****  ROUTER VARIABLES  *****/
   bool route_req_sent=FALSE;
   bool route_rep_sent=FALSE;
-  
   
   bool locked;
   
   bool actual_send (uint16_t address, message_t* packet);
   bool generate_send (uint16_t address, message_t* packet, uint8_t type);
   
-  bool generate_send (uint16_t address, message_t* packet, uint8_t type){
+  bool generate_send (uint16_t address, message_t* packet, uint8_t type) { 
   /*
   * 
   * Function to be used when performing the send after the receive message event.
@@ -109,15 +113,21 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-
   	actual_send(queue_addr, &queued_packet);
   }
 
   event void Timer1.fired() {
     dbg("boot","\nInit timer 1\n\n");
+
+    // create ROUTE_REQ msg
+    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+    msg->type = 1;
+    msg->src = 1;
+    msg->dest = 7;
+    generate_send(AM_BROADCAST_ADDR,msg,1)
   }
   
-  bool actual_send (uint16_t address, message_t* packet){
+  bool actual_send(uint16_t address, message_t* packet){
     radio_route_msg_t* rcm = (radio_route_msg_t*)packet;
     if (rcm == NULL) {
 		  return;
@@ -145,10 +155,10 @@ implementation {
       radio_route_msg_t* rcm = (radio_route_msg_t*)payload;
       
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
-      dbg("radio_pack",">>>Pack \n \t Payload length %hhu \n", call Packet.payloadLength( bufPtr ));
+      dbg("radio_pack",">>>Pack \n \t type %d \n", msg->type);
+      dbg("radio_pack",">>>Pack \n \t src  %d \n", msg->src);
+      dbg("radio_pack",">>>Pack \n \t dest %d \n", msg->dest);
       
-      dbg_clear("radio_pack","\t\t Payload \n" );
-      dbg_clear("radio_pack", "\t\t value: %hhu \n", rcm->value);
       return bufPtr;
     }
     
