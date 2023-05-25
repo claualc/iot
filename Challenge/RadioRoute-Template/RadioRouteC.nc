@@ -179,14 +179,14 @@ implementation {
 
       }
 
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &msg, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\t..::SENT from %d to %u\n", TOS_NODE_ID, address );	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
-    dbg("radio_send", "\t\t..::SENT DONE from %d to %u type %u\n", sent->src, sent->dest,sent->type);	
+    dbg("radio_send", "\t\t..::SENT DONE from %U to %u type %u\n", sent->src, sent->dest,sent->type);	
   }
 
   event void AMControl.stopDone(error_t err) {
