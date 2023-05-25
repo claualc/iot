@@ -52,8 +52,8 @@ print "Activate debug message on channel radio_send"
 t.addChannel("radio_send",out);
 print "Activate debug message on channel radio_rec\n\n"
 t.addChannel("radio_rec",out);
-#print "Activate debug message on channel radio_pack"
-#t.addChannel("radio_pack",out);
+print "Activate debug message on channel radio_pack"
+t.addChannel("radio_pack",out);
 print "\n\n\n"
 
 print "******* CREATING NODES"
