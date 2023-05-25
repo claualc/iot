@@ -88,7 +88,6 @@ implementation {
  /****** EVENTS *****/
   event void Boot.booted() {
     dbg("boot","\nNode booted %d.\n\n",TOS_NODE_ID);
-    dbg("radio_rec", "radio_rec");
     call AMControl.start();
   }
 
@@ -122,7 +121,9 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    dbg("radio_send", "\n..::AMSend.sendDone ERROR %s\n\n",error);	
+    	
+    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+    dbg("radio_send", "\n..::AMSend.sendDone value sent %d\n\n",rcm->value);
     if (&packet == bufPtr) {
 			dbg("radio_send", "\n..::AMSend.sendDone -> PACKET SENT\n\n");	
     }
