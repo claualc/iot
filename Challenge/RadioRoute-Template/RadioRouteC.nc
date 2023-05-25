@@ -144,7 +144,7 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
-      actual_send(msg->dest, msg);
+      //actual_send(msg->dest, msg);
 
 
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
