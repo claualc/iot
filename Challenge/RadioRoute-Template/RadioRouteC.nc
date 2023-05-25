@@ -108,7 +108,7 @@ implementation {
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
     dbg("radio","queue_addr %d!\n\n", queue_addr);
-  	actual_send (queue_addr, &queued_packet);
+  	actual_send (AM_BROADCAST_ADDR, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
