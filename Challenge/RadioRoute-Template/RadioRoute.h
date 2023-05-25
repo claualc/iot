@@ -10,9 +10,9 @@ typedef nx_struct radio_route_msg {
 		1 - ROUTE_REQ MSG
 		2 - ROUTE_REPLY
 	*/
-	nx_int8_t type;
-	nx_int16_t src;  // Sender
-	nx_int16_t dest; // Node Requested
+	nx_uint16_t type;
+	nx_uint16_t src;  // Sender
+	nx_uint16_t dest; // Node Requested
 	/*
 	value: defines msg payload
 	The meaning of the value attr changes 
@@ -21,7 +21,7 @@ typedef nx_struct radio_route_msg {
 		if ROUTE_REQ - none
 		if REPLY_REQ - hop_count
 	*/
-	nx_int16_t value;
+	nx_uint16_t value;
 } radio_route_msg_t;
 
 enum {
