@@ -200,6 +200,7 @@ implementation {
       */
       if (msg->type == DATA) {
         // add led function
+        dbg("radio_rec", "\t\t TYPE DATA");
         generate_send(msg->dest, msg, DATA);
       } else if (msg->type == ROUTE_REQ) {
 
