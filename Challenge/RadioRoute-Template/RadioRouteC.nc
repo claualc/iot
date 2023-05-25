@@ -58,28 +58,28 @@ implementation {
   bool locked;
   
   bool actual_send (uint16_t address, message_t* packet);
-  bool generate_send (uint16_t address, message_t* packet, uint8_t type);
-  bool clear_queue(int8_t type);
+  bool generate_send (uint16_t address, message_t* packet, uint8_t typpe);
+  bool clear_queue(int8_t typpe);
 
-  bool clear_queue(int8_t type) {
+  bool clear_queue(int8_t typpe) {
     uint16_t queue_addr = NULL;
-    if (type == ROUTE_REP) { 
+    if (typpe == ROUTE_REP) { 
       route_rep_sent=FALSE;
-    } else if (type == ROUTE_REQ) { 
+    } else if (typpe == ROUTE_REQ) { 
       route_req_sent = FALSE;
     }
   }
   
-  bool generate_send (uint16_t address, message_t* packet, uint8_t type) { 
+  bool generate_send (uint16_t address, message_t* packet, uint8_t typpe) { 
   /*
   * 
   * Function to be used when performing the send after the receive message event.
   * It store the packet and address into a global variable and start the timer execution to schedule the send.
-  * It allow the sending of only one message for each REQ and REP type
+  * It allow the sending of only one message for each REQ and REP typpe
   * @Input:
   *		address: packet destination address
   *		packet: full packet to be sent (Not only Payload)
-  *		type: payload message type
+  *		typpe: payload message typpe
   *
   * MANDATORY: DO NOT MODIFY THIS FUNCTION
   */
@@ -87,20 +87,20 @@ implementation {
       dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
   	}else{
-  	if (type == ROUTE_REQ && !route_req_sent ){
-      //dbg("radio_rec", "type == 1 && !route_req_sent");
+  	if (typpe == ROUTE_REQ && !route_req_sent ){
+      //dbg("radio_rec", "typpe == 1 && !route_req_sent");
   		route_req_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
-  	}else if (type == ROUTE_REP && !route_rep_sent){
-      //dbg("radio_rec", "type == 2 && !route_rep_sent");
+  	}else if (typpe == ROUTE_REP && !route_rep_sent){
+      //dbg("radio_rec", "typpe == 2 && !route_rep_sent");
   	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
-  	}else if (type == 0){
-      //dbg("radio_rec", "type == 0");
+  	}else if (typpe == 0){
+      //dbg("radio_rec", "typpe == 0");
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;	
@@ -139,7 +139,7 @@ implementation {
 
     if (TOS_NODE_ID == 1) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-      msg->type = DATA;
+      msg->typpe = DATA;
       msg->src = 1;
       msg->dest = 7;
 
@@ -151,7 +151,7 @@ implementation {
   bool actual_send(uint16_t address, message_t* packet) {
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %d to %u type %u\n", TOS_NODE_ID, msg->dest,msg->type);
+      dbg("boot","..::SENDING from %d to %u typpe %u\n", TOS_NODE_ID, msg->dest,msg->typpe);
       /*
         if destination address not in actual routing_table
       */
@@ -160,16 +160,16 @@ implementation {
         waiting_packet = *packet;
 
         msg->src = TOS_NODE_ID;
-        msg->type = ROUTE_REQ;
+        msg->typpe = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
-        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u typpe %u\n",msg->src,msg->dest,msg->typpe);
       } else {
-          if (msg->type == DATA) {
+          if (msg->typpe == DATA) {
               address = rt_next_hop[msg->dest-1];
-          } else if (msg->type == ROUTE_REQ) {
+          } else if (msg->typpe == ROUTE_REQ) {
               address = AM_BROADCAST_ADDR;
-          } else if (msg->type == ROUTE_REP){
+          } else if (msg->typpe == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->value = msg->value + 1;
               address = rt_next_hop[msg->dest-1];
@@ -177,7 +177,7 @@ implementation {
       }
 
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u typpe \n", TOS_NODE_ID, address);	
     }
   }
 
@@ -194,22 +194,22 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
-      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u typpe %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->typpe);
       /*
-      divive the receive functionality by the msg type
+      divive the receive functionality by the msg typpe
       */
-      if (msg->type == DATA) {
+      if (msg->typpe == DATA) {
         // add led function
-        dbg("radio_rec", "\t\t TYPE DATA");
+        dbg("radio_rec", "\t\t TYPpE DATA");
         generate_send(msg->dest, msg, DATA);
-      } else if (msg->type == ROUTE_REQ) {
+      } else if (msg->typpe == ROUTE_REQ) {
 
         if (msg->dest == TOS_NODE_ID) {
           /*
           this is the node the ROUTE_REQ was looking for
           Generate ROUTE_REPLY
           */
-          msg->type = ROUTE_REP;
+          msg->typpe = ROUTE_REP;
           msg->dest = msg->src;
           msg->src = TOS_NODE_ID;
           msg->value = 0;
@@ -229,7 +229,7 @@ implementation {
             */
 
             // create ROUTE_REP with actual routing table info
-            msg->type = ROUTE_REP;
+            msg->typpe = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
             // src becomes the dest and the dest the src
             temp_src=msg->src;
@@ -247,7 +247,7 @@ implementation {
           }
 
         } 
-      }  else if (msg->type == ROUTE_REP) {
+      }  else if (msg->typpe == ROUTE_REP) {
           uint16_t actual_count;
 
           /*
@@ -268,13 +268,13 @@ implementation {
           // // if (waiting_packet->dest == msg->dest) {
           // //   // if is the same, send the packet waiting the route discovery
           // //   clear_queue(ROUTE_REQ); // request done
-          // //   generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
+          // //   generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPpE);
           // // } else {
           // //   /* this is the original node who 
           // //     requested the route discovery.
           // //     Send its data packet
           // //   */
-          // //   generate_send(msg->dest,bufPtr,msg->type);
+          // //   generate_send(msg->dest,bufPtr,msg->typpe);
           // // }
           
           return bufPtr;

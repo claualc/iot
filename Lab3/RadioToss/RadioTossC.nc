@@ -101,14 +101,14 @@ implementation {
     else {
       radio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
       if (rcm == NULL) {
-		return;
+		    return;
       }
 
       rcm->counter = counter;
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_toss_msg_t)) == SUCCESS) {
-		dbg("radio_send", "Sending packet");	
-		locked = TRUE;
-		dbg_clear("radio_send", " at time %s \n", sim_time_string());
+        dbg("radio_send", "Sending packet");	
+        locked = TRUE;
+        dbg_clear("radio_send", " at time %s \n", sim_time_string());
       }
     }
   }

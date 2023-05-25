@@ -10,7 +10,7 @@ typedef nx_struct radio_route_msg {
 		1 - ROUTE_REQ MSG
 		2 - ROUTE_REPLY
 	*/
-	nx_uint16_t type;
+	nx_uint16_t typpe;
 	nx_uint16_t src;  // Sender
 	nx_uint16_t dest; // Node Requested
 	/*
