@@ -112,7 +112,7 @@ implementation {
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(packet, sizeof(radio_route_msg_t));
       if (rcm == NULL) {
 		return;
       }
