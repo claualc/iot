@@ -274,7 +274,7 @@ implementation {
       if (stored_packet->dest == msg->dest) {
         // if is the same, send the packet waiting the route discovery
         clear_queue(ROUTE_REQ); // request done
-        generate_send(stored_packet->dest,stored_packet,stored_packet->TYPE);
+        generate_send(stored_packet->dest,&stored_packet,stored_packet->TYPE);
       } else {
         /* this is the original node who 
           requested the route discovery.
