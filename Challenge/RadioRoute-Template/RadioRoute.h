@@ -11,8 +11,6 @@ typedef nx_struct radio_route_msg {
 		2 - ROUTE_REPLY
 	*/
 	nx_int8_t type;
-	nx_int8_t src;  // Sender
-	nx_int8_t dest; // Node Requested
 	/*
 	value: defines msg payload
 	The meaning of the value attr changes 

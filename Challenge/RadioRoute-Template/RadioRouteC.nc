@@ -96,7 +96,7 @@ implementation {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
       call Timer0.startPeriodic(250);
-     // call Timer1.startPeriodic(250);
+      call Timer1.startPeriodic(250);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -109,6 +109,7 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
+
   	actual_send(queue_addr, &queued_packet);
   }
 
@@ -117,13 +118,21 @@ implementation {
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\n..::AMSend.send to %d", address);	
+    radio_toss_msg_t* rcm = (radio_toss_msg_t*)packet;
+    if (rcm == NULL) {
+		  return;
+    }
+    rcm ->value=5;
+
+    if (call AMSend.send(AM_BROADCAST_ADDR, rcm, sizeof(radio_route_msg_t)) == SUCCESS) {
+      dbg("radio_send", "\n..::AMSend.send to %d\n", address);	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    dbg_clear("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
+    radio_toss_msg_t* sent = (radio_toss_msg_t*)bufPtr;
+    dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
+    dbg("radio_send", "\t\tvalue: %d \n", sent->value);
   }
 
   event void AMControl.stopDone(error_t err) {
