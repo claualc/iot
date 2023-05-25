@@ -107,14 +107,7 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	//actual_send(queue_addr, &queued_packet);
-    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    if (msg == NULL) {
-		  return;
-    }
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
-    }
+  	actual_send(AM_BROADCAST_ADDR, &packet);
     
   }
   
