@@ -187,34 +187,34 @@ implementation {
       else if (msg->type == 1) {
       // 1 - ROUTE_REQ MSG
 
-       if (msg->dest == TOS_NODE_ID) {
+        if (msg->dest == TOS_NODE_ID) {
           /*
            ROUTE REPLY: this is the node the ROUTE_REQ
            was looking for
           */
         } else {
-          /*
-          check if ROUT_REQ dest is in actual routing_table
-          */
-
-          bool dest_is_in_routtable = FALSE;
-          int i = 0;
-
-          for (i = 0; i < NODES_COUNT; ++i) {
-            if (msg->dest == rt_dest[i]){
-              dest_is_in_routtable = TRUE;
-            }
-          }
-
-          if (dest_is_in_routtable) {
-            /* 
-             ROUTE REPLY with hop_count value +1 of the table
+            /*
+            check if ROUT_REQ dest is in actual routing_table
             */
-          } else {
-            // dest not found yet, keep looking with BROADCASTS
-          }
-      } 
-      else {
+
+            bool dest_is_in_routtable = FALSE;
+            int i = 0;
+
+            for (i = 0; i < NODES_COUNT; ++i) {
+              if (msg->dest == rt_dest[i]){
+                dest_is_in_routtable = TRUE;
+              }
+            }
+
+            if (dest_is_in_routtable) {
+              /* 
+              ROUTE REPLY with hop_count value +1 of the table
+              */
+            } else {
+              // dest not found yet, keep looking with BROADCASTS
+            }
+        } 
+      }  else {
       // 	2 - REPLY_REQ
 
       // save the data on the table
