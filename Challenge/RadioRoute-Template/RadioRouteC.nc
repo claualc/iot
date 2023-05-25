@@ -125,14 +125,12 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-    if (len != sizeof(radio_toss_msg_t)) {return bufPtr;}
+    if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
-      radio_toss_msg_t* msg = (radio_toss_msg_t*)payload;
+      radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       
       dbg("radio_rec", "..::Receive.receive: value %d\n",msg->value);
     }
-	
-    
   }
 
 }
