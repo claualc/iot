@@ -82,14 +82,6 @@ implementation {
   }
 
  /****** EVENTS *****/
-  event void Boot.booted() {
-    dbg("boot","Application booted.\n");
-    call AMControl.start();
-  }
-
-  event void AMControl.stopDone(error_t err) {
-    dbg("boot", "Radio stopped!\n");
-  }
   
   event void Timer0.fired() {
   	/*
@@ -106,25 +98,23 @@ implementation {
 	  
   }
   
-  
   event void Boot.booted() {
     dbg("boot","Application booted.\n");
-    /* Fill it ... */
   }
 
-  event void AMControl.startDone(error_t err) {
-	/* Fill it ... */
+  event void AMControl.stopDone(error_t err) {
+    dbg("boot", "Radio stopped!\n");
   }
 
   event void AMControl.stopDone(error_t err) {
     /* Fill it ... */
   }
   
-  event void Timer0.fired() {
+  // event void Timer1.fired() {
 	/*
 	* Implement here the logic to trigger the Node 1 to send the first REQ packet
 	*/
-  }
+   //}
 
   event message_t* Receive.receive(message_t* bufPtr, 
 				   void* payload, uint8_t len) {
