@@ -198,7 +198,6 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* stored_packet = waiting_packet;
 
       dbg_clear("radio_rec", "..::RECEIVE at %d type %hu\n",TOS_NODE_ID, msg->type);
 
@@ -271,10 +270,10 @@ implementation {
       }
 
       // check if this is the original src node of the ROUTE_REQ
-      if (stored_packet->dest == msg->dest) {
+      if (waiting_packet->dest == msg->dest) {
         // if is the same, send the packet waiting the route discovery
         clear_queue(ROUTE_REQ); // request done
-        generate_send(stored_packet->dest,&stored_packet,stored_packet->TYPE);
+        generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
       } else {
         /* this is the original node who 
           requested the route discovery.
