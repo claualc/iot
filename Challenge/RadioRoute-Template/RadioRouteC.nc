@@ -125,7 +125,7 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-     dbg("radio_rec", "..::Receive.receive len= ",sizeof(radio_route_msg_t));
+     dbg("boot", "..::Receive.receive len= %hhu ",call Packet.payloadLength( bufPtr ));
     if (len != sizeof(radio_route_msg_t)) {
       dbg("radio_rec", "..::Receive.receive: ERROR: length of buffer incorrect\n");
       return bufPtr;
