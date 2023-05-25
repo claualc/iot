@@ -165,7 +165,6 @@ implementation {
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       } else {
-        
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
           } else if (msg->type == ROUTE_REQ) {
