@@ -13,14 +13,18 @@
 
 module RadioRouteC @safe() {
   uses {
-  
     /****** INTERFACES *****/
-	interface Boot;
-
+    interface Boot;
+    //interface for LED
+    interface Leds;
+    //interface for timers
+    interface Timer<TMilli> as Timer0;
     //interfaces for communication
-	//interface for timers
-	//interface for LED
+    interface SplitControl as AMControl;
+    interface AMSend;
+    interface Receive;
     //other interfaces, if needed
+    interface Packet;
   }
 }
 implementation {
@@ -41,11 +45,6 @@ implementation {
   
   bool actual_send (uint16_t address, message_t* packet);
   bool generate_send (uint16_t address, message_t* packet, uint8_t type);
-  
-  
-  
-  
-  
   
   bool generate_send (uint16_t address, message_t* packet, uint8_t type){
   /*
@@ -80,6 +79,16 @@ implementation {
   	}
   	}
   	return TRUE;
+  }
+
+ /****** EVENTS *****/
+  event void Boot.booted() {
+    dbg("boot","Application booted.\n");
+    call AMControl.start();
+  }
+
+  event void AMControl.stopDone(error_t err) {
+    dbg("boot", "Radio stopped!\n");
   }
   
   event void Timer0.fired() {

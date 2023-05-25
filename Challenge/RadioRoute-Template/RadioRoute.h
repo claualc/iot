@@ -9,6 +9,7 @@ typedef nx_struct radio_route_msg {
 	//field 3
 	//....
 	//field n
+	nx_uint16_t counter;
 } radio_route_msg_t;
 
 enum {
