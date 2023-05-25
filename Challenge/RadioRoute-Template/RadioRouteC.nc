@@ -183,7 +183,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
+    radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));
     dbg("radio_send", "\t\t..::SENT DONE -> from %u to %u type %u\n", sent->src, sent->dest,sent->type);	
   }
 
@@ -196,9 +196,10 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
+      radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));;;
 
       dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, sent->dest,sent->src,sent->type);
       /*
       divive the receive functionality by the msg type
       */
