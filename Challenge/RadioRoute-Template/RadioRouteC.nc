@@ -118,12 +118,16 @@ implementation {
 
   event void Timer1.fired() {
     // create ROUTE_REQ msg
-    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    msg->type = 1;
-    msg->src = 1;
-    msg->dest = 7;
-    dbg("boot","\nInit timer 1\n\n");
-    generate_send(AM_BROADCAST_ADDR,*msg,1)
+
+    if (TOS_NODE_ID == 1) {
+      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+      msg->type = 1;
+      msg->src = 1;
+      msg->dest = 7;
+      dbg("boot","\nInit timer 1\n\n");
+      actual_send(AM_BROADCAST_ADDR,msg)
+    }
+
   }
   
   bool actual_send(uint16_t address, message_t* packet){
