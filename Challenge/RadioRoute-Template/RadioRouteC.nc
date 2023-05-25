@@ -125,13 +125,13 @@ implementation {
       msg->src = 1;
       msg->dest = 7;
 
-      dbg("boot","\nSENDING FIRST PACKET\n\n");
+      dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET\n\n");
       actual_send(AM_BROADCAST_ADDR,&packet);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packet){
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\n..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
     }
   }
@@ -139,9 +139,9 @@ implementation {
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
     dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
-    dbg("radio_pack",">>>Pack \n \t type %d \n", sent->type);
-      dbg("radio_pack",">>>Pack \n \t src  %d \n", sent->src);
-      dbg("radio_pack",">>>Pack \n \t dest %d \n", sent->dest);
+    dbg("radio_pack","\t type %d \n", sent->type);
+    dbg("radio_pack","\t src  %d \n", sent->src);
+    dbg("radio_pack","\t dest %d \n", sent->dest);
   }
 
   event void AMControl.stopDone(error_t err) {
