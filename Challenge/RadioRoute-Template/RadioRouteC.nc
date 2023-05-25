@@ -178,7 +178,7 @@ implementation {
       }
 
     if (call AMSend.send(address, &msg, sizeof(radio_route_msg_t)) == SUCCESS) {
-      //dbg("radio_send", "\t\t..::AMSend.send from %d to %u type \n", TOS_NODE_ID, address);	
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
 
