@@ -37,7 +37,7 @@ implementation {
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
 
-  message_t* waiting_packet;
+  message_t waiting_packet;
 
 
   /*****  CONSTANTS  *****/
