@@ -112,7 +112,6 @@ implementation {
     }
     msg->value = 253;
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY %s",AM_BROADCAST_ADDR);	
 		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY");	
     }
   }
@@ -126,7 +125,11 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-    if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
+     dbg("radio_rec", "..::Receive.receive len= ",sizeof(radio_route_msg_t));
+    if (len != sizeof(radio_route_msg_t)) {
+      dbg("radio_rec", "..::Receive.receive: ERROR: length of buffer incorrect\n");
+      return bufPtr;
+      }
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       
