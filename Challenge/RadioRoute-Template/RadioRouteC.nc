@@ -115,12 +115,7 @@ implementation {
   event void Timer1.fired() {
     dbg("boot","\nInit timer 1\n\n");
 
-    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    if (rcm == NULL) {
-		  return;
-    }
-    rcm->value = 5;
-    actual_send(AM_BROADCAST_ADDR, rcm)
+   
   }
   
   bool actual_send (uint16_t address, message_t* packet){
