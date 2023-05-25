@@ -176,7 +176,6 @@ implementation {
               msg->value = msg->value + 1;
               address = rt_next_hop[msg->dest-1];
           } 
-
       }
 
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
