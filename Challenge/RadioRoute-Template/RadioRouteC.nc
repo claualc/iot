@@ -194,7 +194,7 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-    dbg("radio_rec", "\nReceived packet at time %s\n", sim_time_string());
+    dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
