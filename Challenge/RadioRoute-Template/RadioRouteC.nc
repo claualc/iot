@@ -265,14 +265,14 @@ implementation {
 
           dbg_clear("radio_pack","\t\tTable update at node %d -> dest: %hu next_hop: %hu count: %hu\n"
                     ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
-          clear_queue(ROUT_REQ);
+          clear_queue(ROUTE_REQ);
       }
 
       // check if this is the original src node of the ROUTE_REQ
-      if ((&waiting_packet)->dest == msg->dest) {
+      if (waiting_packet->dest == msg->dest) {
         // if is the same, send the packet waiting the route discovery
-        clear_queue(ROUT_REQ); // request done
-        generate_send((&waiting_packet)->dest,&waiting_packet,&waiting_packet->TYPE);
+        clear_queue(ROUTE_REQ); // request done
+        generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
       } else {
         /* this is the original node who 
           requested the route discovery.
