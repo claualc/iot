@@ -88,19 +88,19 @@ implementation {
   		return FALSE;
   	}else{
   	if (type == ROUTE_REQ && !route_req_sent ){
-      dbg("radio_rec", "type == 1 && !route_req_sent");
+      //dbg("radio_rec", "type == 1 && !route_req_sent");
   		route_req_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == ROUTE_REP && !route_rep_sent){
-      dbg("radio_rec", "type == 2 && !route_rep_sent");
+      //dbg("radio_rec", "type == 2 && !route_rep_sent");
   	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == 0){
-      dbg("radio_rec", "type == 0");
+      //dbg("radio_rec", "type == 0");
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;	
@@ -194,7 +194,7 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-    dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
+    dbg("radio_rec", "\nReceived packet at time %s\n", sim_time_string());
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
@@ -240,7 +240,7 @@ implementation {
             temp_src=msg->src;
             msg->src = msg->dest;
             msg->dest = temp_src;
-            dbg("radio_rec", "\t\tROUTE founded at node %d", TOS_NODE_ID);
+            dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
             dbg_clear("radio_rec", "\t\tREPLY_REQ generated to %hu\n",msg->dest);
           } else {
             /* 
