@@ -140,7 +140,7 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = DATA;
       msg->src = 1;
-      msg->dest = 3;
+      msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
       actual_send(msg->dest, &packet);
@@ -175,7 +175,7 @@ implementation {
           } 
       }
 
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, msg, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
