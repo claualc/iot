@@ -118,14 +118,14 @@ implementation {
   
   bool actual_send (uint16_t address, message_t* packet){
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\n..::AMSend.send\n");	
-      dbg("radio_send", "\t\tvalue:  %d\n",packet-> value);	
-      dbg("radio_send", "\t\tto:  %d\n\n",queue_addr);	
+      dbg("radio_send", "\n..::AMSend.send to %d", address);	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     dbg_clear("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
+    radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));
+    dbg("radio_send", "\t\tvalue:  %d\n",sent-> value);	
   }
 
   event void AMControl.stopDone(error_t err) {
