@@ -107,7 +107,18 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	actual_send (queue_addr, &queued_packet);
+  	//actual_send (queue_addr, &queued_packet);
+    radio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
+      if (rcm == NULL) {
+		return;
+      }
+
+      rcm->counter = counter;
+      if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_toss_msg_t)) == SUCCESS) {
+		dbg("radio_send", "Sending packet");	
+		locked = TRUE;
+		dbg_clear("radio_send", " at time %s \n", sim_time_string());
+      }
   }
   
   bool actual_send (uint16_t address, message_t* packet){
@@ -121,11 +132,9 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    	
-    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    dbg("radio_send", "\n..::AMSend.sendDone value sent %d\n\n",rcm->value);
     if (&packet == bufPtr) {
-			dbg("radio_send", "\n..::AMSend.sendDone -> PACKET SENT\n\n");	
+      dbg("radio_send", "Packet sent...");
+      dbg_clear("radio_send", " at time %s \n", sim_time_string());
     }
   }
 
@@ -134,19 +143,17 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-     dbg("radio_rec", "..::Receive.receive ");
-    if (len != sizeof(radio_route_msg_t)) {
-      dbg("radio_rec", "..::Receive.receive: ERROR: length of buffer incorrect\n");
-      return bufPtr;
-      }
+    if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
-      radio_route_msg_t* msg = (radio_route_msg_t*)payload;
+      radio_route_msg_t* rcm = (radio_route_msg_t*)payload;
       
-      dbg("radio_rec", "..::Receive.receive: value %d\n",msg->value);
-
+      dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
+      dbg("radio_pack",">>>Pack \n \t Payload length %hhu \n", call Packet.payloadLength( bufPtr ));
+      
+      dbg_clear("radio_pack","\t\t Payload \n" );
+      dbg_clear("radio_pack", "\t\t msg_counter: %hhu \n", rcm->counter);
       return bufPtr;
     }
-
     
   }
 
