@@ -120,7 +120,7 @@ implementation {
     dbg("boot","\nInit timer 1\n\n");
 
     // create ROUTE_REQ msg
-    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
     msg->type = 1;
     msg->src = 1;
     msg->dest = 7;
