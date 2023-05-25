@@ -107,7 +107,7 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	actual_send (queue_addr, &queued_packet);
+  	actual_send(queue_addr, &queued_packet);
     
   }
   
