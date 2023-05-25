@@ -148,9 +148,6 @@ implementation {
 
 
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-      if (rcm == NULL) {
-		    return;
-      }
 
       msg->type = DATA;
       msg->src = 1;
