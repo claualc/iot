@@ -151,7 +151,7 @@ implementation {
   bool actual_send(uint16_t address, message_t* packet) {
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %d to %hu\n", TOS_NODE_ID, msg->dest);
+      dbg_clear("boot","..::SENDING from %d to %hu\n", TOS_NODE_ID, msg->dest);
 
       /*
         if destination address not in actual routing_table
@@ -164,7 +164,7 @@ implementation {
         msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
-        dbg("radio_rec", "\t\tRoute discovery generated from %hu to %hu\n",msg->src,msg->dest);
+        dbg_clear("radio_rec", "\t\tRoute discovery generated from %hu to %hu\n",msg->src,msg->dest);
       } else {
         
           if (msg->type == DATA) {
@@ -180,7 +180,7 @@ implementation {
       }
 
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\t\t..::AMSend.send from %d to %hu\n", TOS_NODE_ID, address);	
+      dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %hu\n", TOS_NODE_ID, address);	
     }
   }
 
