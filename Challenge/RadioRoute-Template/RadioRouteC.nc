@@ -83,7 +83,7 @@ implementation {
 
  /****** EVENTS *****/
   event void Boot.booted() {
-    dbg("boot","\nNode booted %d.\n\n"TOS_NODE_ID);
+    dbg("boot","\nNode booted %d.\n\n",TOS_NODE_ID);
     call AMControl.start();
   }
 
