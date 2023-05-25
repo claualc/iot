@@ -124,8 +124,9 @@ implementation {
       msg->type = 1;
       msg->src = 1;
       msg->dest = 7;
+
       dbg("boot","\nInit timer 1\n\n");
-      actual_send(AM_BROADCAST_ADDR,msg)
+      actual_send(AM_BROADCAST_ADDR,packet)
     }
 
   }
