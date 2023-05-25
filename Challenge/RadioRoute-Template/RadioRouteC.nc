@@ -164,7 +164,7 @@ implementation {
         msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
-        dbg_clear("radio_rec", "\t\tRoute discovery generated from %hu to %hu\n",msg->src,msg->dest);
+        dbg_clear("radio_rec", "\t\tRoute discovery generated from %hu to %hu type %hu\n",msg->src,msg->dest,msg->type);
       } else {
         
           if (msg->type == DATA) {
