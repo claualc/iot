@@ -143,7 +143,7 @@ implementation {
       msg->src = 1;
       msg->dest = 7;
 
-      dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET\n\n");
+      dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %hu\n\n", msg->dest);
       actual_send(msg->dest,&packet);
     }
   }
