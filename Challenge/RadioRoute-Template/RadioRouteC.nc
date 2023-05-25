@@ -160,7 +160,7 @@ implementation {
         waiting_packet = *packet;
 
         msg->src = TOS_NODE_ID;
-        msg->type = 1;
+        msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
@@ -194,7 +194,7 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
-      dbg("radio_rec", "..::RECEIVE at %d -> dest %hu src %hu type %hu\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
       /*
       divive the receive functionality by the msg type
       */
