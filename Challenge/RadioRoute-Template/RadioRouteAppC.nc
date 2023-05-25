@@ -8,7 +8,7 @@ implementation {
 /****** COMPONENTS *****/
   components MainC, RadioRouteC as App;
   //add the other components here
-  components  LedsC;
+  components LedsC;
   components new AMSenderC(AM_RADIO_COUNT_MSG);
   components new AMReceiverC(AM_RADIO_COUNT_MSG);
   components new TimerMilliC();
@@ -23,7 +23,7 @@ implementation {
   App.AMSend -> AMSenderC;
   App.AMControl -> ActiveMessageC;
   App.Leds -> LedsC;
-  App.MilliTimer -> TimerMilliC;
+  App.Timer0 -> TimerMilliC;
   App.Packet -> AMSenderC;
 
 }
