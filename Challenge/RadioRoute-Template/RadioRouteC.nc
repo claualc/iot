@@ -107,8 +107,7 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-    dbg("radio","queue_addr %d!\n\n", queue_addr);
-  	actual_send (AM_BROADCAST_ADDR, &queued_packet);
+  	actual_send (queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
@@ -116,7 +115,6 @@ implementation {
     if (msg == NULL) {
 		  return;
     }
-    msg->value = 5;
     if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
 		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
     }
