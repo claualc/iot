@@ -88,19 +88,19 @@ implementation {
   		return FALSE;
   	}else{
   	if (type == ROUTE_REQ && !route_req_sent ){
-      //dbg("radio_rec", "type == 1 && !route_req_sent");
+      dbg("radio_rec", "type == 1 && !route_req_sent");
   		route_req_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == ROUTE_REP && !route_rep_sent){
-      //dbg("radio_rec", "type == 2 && !route_rep_sent");
+      dbg("radio_rec", "type == 2 && !route_rep_sent");
   	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == 0){
-      //dbg("radio_rec", "type == 0");
+      dbg("radio_rec", "type == 0");
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;	
@@ -135,7 +135,6 @@ implementation {
   }
 
   event void Timer1.fired() {
-    // create ROUTE_REQ msg
 
     if (TOS_NODE_ID == 1) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
@@ -160,7 +159,7 @@ implementation {
         waiting_packet = *packet;
 
         msg->src = TOS_NODE_ID;
-        msg->type = 6;
+        msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
