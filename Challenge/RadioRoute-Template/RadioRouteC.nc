@@ -144,14 +144,14 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
-      actual_send(msg->dest,&msg);
+      actual_send(msg->dest,msg);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
       radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %u to  %u type  %u\n", msg->src, address,msg->type);
+      dbg("boot","..::SENDING from %u to  %u type %u\n", msg->src, address,msg->type);
 
       /*
         if destination address not in actual routing_table
