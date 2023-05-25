@@ -39,11 +39,14 @@ implementation {
 
   /*****  CONSTANTS  *****/
   uint16_t NODES_COUNT = 7;
+  uint16_t DATA = 0;
+  uint16_t ROUTE_REQ = 1;
+  uint16_t ROUTE_REP = 2;
 
   /*****  ROUTING TABLE  *****/
-  uint16_t rt_dest[7];
-  uint16_t rt_next_hop[7];
-  uint16_t rt_hot_count[7];
+  // the index of the arrays is the destination address
+  uint16_t rt_next_hop[7]={NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+  uint16_t rt_hot_count[7]={NULL,NULL,NULL,NULL,NULL,NULL,NULL};
   
   /*****  ROUTER VARIABLES  *****/
   bool route_req_sent=FALSE;
@@ -53,6 +56,16 @@ implementation {
   
   bool actual_send (uint16_t address, message_t* packet);
   bool generate_send (uint16_t address, message_t* packet, uint8_t type);
+  bool clear_queue(int8_t type);
+
+  bool clear_queue(int8_t type) {
+    uint16_t queue_addr = NULL;
+    if (type == REPLY_REQ) { 
+      route_rep_sent=FALSE;
+    } else if (type == ROUT_REQ) { 
+      route_req_sent = FALSE;
+    }
+  }
   
   bool generate_send (uint16_t address, message_t* packet, uint8_t type) { 
   /*
@@ -71,13 +84,13 @@ implementation {
       dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
   	}else{
-  	if (type == 1 && !route_req_sent ){
+  	if (type == ROUTE_REQ && !route_req_sent ){
       dbg("radio_rec", "type == 1 && !route_req_sent");
   		route_req_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
-  	}else if (type == 2 && !route_rep_sent){
+  	}else if (type == ROUTE_REP && !route_rep_sent){
       dbg("radio_rec", "type == 2 && !route_rep_sent");
   	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
@@ -135,12 +148,10 @@ implementation {
   bool actual_send(uint16_t address, message_t* packet) {
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-    if (msg->type == 0) {
-        // 0 - DATA MSG
+    if (msg->type == DATA) {
         // just send
       } 
-      else if (msg->type == 1) {
-        // 1 - ROUTE_REQ MSG
+      else if (msg->type == ROUTE_REQ) {
         // add to route queue and send /generate send
       } 
       else {
@@ -168,62 +179,111 @@ implementation {
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
     dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
+    dbg("radio_rec", "..::Receive.receive:\n");
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)bufPtr;
 
-      dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
-      dbg("radio_pack","\t type %d \n", (int) msg->type);
-      dbg("radio_pack","\t src  %d \n", (int) msg->src);
-      dbg("radio_pack","\t dest %d \n", (int) msg->dest);
+      /*
+      divive the receive functionality by the msg type
+      */
 
-      if (msg->type == 0) {
-      // 0 - DATA MSG
+      if (msg->type == DATA) {
+        /*
+        if destination address not in actual routing_table
+        */
+        if (rt_next_hop[msg->dest] == NULL) {
+          // hold on DATA packet and do a route discovery
+          route_req_sent = TRUE;
+          queue_addr = msg->dest;
+          queued_packet = &msg;
 
-      // led
-      // send to nex hop if needed
-
+          msg->src = TOS_NODE_ID;
+          msg->type = ROUT_REQ;
+          msg->value = NULL;
+          generate_send(AM_BROADCAST_ADDR,bufPtr,ROUT_REQ);
+          dbg("radio_rec", "\t\tRoute discovery generated from %hu to %hu\n",msg->src,msg->dest);
+        } else {
+          // led function
+          // send to nex hop
+          msg->dest = rt_next_hop[msg->dest];
+          msg->src = TOS_NODE_ID;
+          generate_send(msg->dest,bufPtr,DATA);
+        }
       } 
-      else if (msg->type == 1) {
-      // 1 - ROUTE_REQ MSG
+      else if (msg->type == ROUT_REQ) {
 
         if (msg->dest == TOS_NODE_ID) {
           /*
-           ROUTE REPLY: this is the node the ROUTE_REQ
-           was looking for
+          this is the node the ROUTE_REQ was looking for
+          Generate ROUTE_REPLY
           */
+          msg->type = ROUTE_REP;
+          msg->dest = msg->src;
+          msg->src = TOS_NODE_ID;
+          msg->value = 0;
+          generate_send(msg->dest,bufPtr,ROUTE_REP);
+          dbg("radio_rec", "\t\tROUTE_REQ arrived to destination node %d\n", TOS_NODE_ID);
+          dbg("radio_rec", "\t\tREPLY_REQ generated to %d\n",msg->dest);
         } else {
-            /*
-            check if ROUT_REQ dest is in actual routing_table
-            */
+          /*
+           this is not the node the ROUTE_REQ was looking for
+           check if the destination node is in the current table
+          */
 
-            bool dest_is_in_routtable = FALSE;
-            int i = 0;
-
-            for (i = 0; i < NODES_COUNT; ++i) {
-              if (msg->dest == rt_dest[i]){
-                dest_is_in_routtable = TRUE;
-              }
-            }
-
-            if (dest_is_in_routtable) {
+            if (rt_next_hop[msg->dest] != NULL) {
               /* 
-              ROUTE REPLY with hop_count value +1 of the table
+              ROUTE_REQ found in routing table
               */
+
+              // create ROUTE_REP with actual routing table info
+              msg->type = ROUTE_REP;
+              msg->value = rt_hot_count[msg->dest];
+              msg->dest = msg->src;
+              msg->src = TOS_NODE_ID;
+              dbg("radio_rec", "\t\tROUTE founded at node %d", TOS_NODE_ID);
+              dbg("radio_rec", "\t\tREPLY_REQ generated to %d\n",msg->dest);
             } else {
-              // dest not found yet, keep looking with BROADCASTS
+              /* 
+              ROUTE_REQ not found int table
+              keep looking and queue packet
+              */
+              route_req_sent = TRUE;
+              queue_addr = msg->dest;
+              queued_packet = &msg;
+              generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REQ);
             }
         } 
-      }  else {
-      // 	2 - REPLY_REQ
+      }  else if (msg->type == REPLY_REQ) {
+      uint16_t actual_count;
 
-      // save the data on the table
-      //    save only if queue_packet and has the same dest
-      //    save only if hop count is smaller than the actual
+      /*
+      Save data on table if empty or acrual count biguer
+      */
+      uint16_t actual_count = rt_hot_count[queue_addr];
+      if (actual_count==NULL || actual_count>msg->value) {
+        // update route in current table
+        rt_hot_count[queue_addr] = msg->value;
+        rt_next_hop[queue_addr] = msg->src;
 
-      // send the next reply msg if needed
-        
-      } 
+        dbg_clear("radio_pack","\t\tTable update node %d -> dest: %d next_hop: %d count: %d\n"
+                  ,queue_addr, msg->src,msg->value );
+        clear_queue(ROUT_REQ);
+      }
+
+      // check if this is the original src node of the ROUTE_REQ
+      if (queue_addr != msg->dest) {
+        // if not, resend reply msg to next hope
+        generate_send(queue_addr,bufPtr,ROUTE_REQ);
+        clear_queue(ROUT_REQ);
+      } else {
+        /* this is the original node who 
+          requested the route discovery.
+          Send its data packet
+        */
+        generate_send(queue_addr,queued_packet,DATA);
+        clear_queue(ROUT_REQ);
+      }
       
       return bufPtr;
     }
