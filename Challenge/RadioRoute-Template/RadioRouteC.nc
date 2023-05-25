@@ -118,7 +118,7 @@ implementation {
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_toss_msg_t* rcm = (radio_toss_msg_t*)packet;
+    radio_route_msg_t* rcm = (radio_route_msg_t*)packet;
     if (rcm == NULL) {
 		  return;
     }
@@ -130,7 +130,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    radio_toss_msg_t* sent = (radio_toss_msg_t*)bufPtr;
+    radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
     dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
     dbg("radio_send", "\t\tvalue: %d \n", sent->value);
   }
