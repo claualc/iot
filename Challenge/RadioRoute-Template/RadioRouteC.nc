@@ -198,7 +198,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t = &waiting_packet;
+      radio_route_msg_t = waiting_packet;
 
       dbg_clear("radio_rec", "..::RECEIVE at %d type %hu\n",TOS_NODE_ID, msg->type);
 
