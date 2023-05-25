@@ -118,7 +118,7 @@ implementation {
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
-      call Timer1.startPeriodic(10000);
+      call Timer1.startPeriodic(1000);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -144,14 +144,14 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
-      actual_send(msg->dest,msg);
+      actual_send(msg->dest,&packet);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
-      radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %u to  %u type  %u\n", msg->src, address,msg->type);
+      dbg_clear("boot","..::SENDING from %d to  %u\n", TOS_NODE_ID, msg->dest);
 
       /*
         if destination address not in actual routing_table
@@ -179,14 +179,14 @@ implementation {
 
       }
 
-    if (call AMSend.send(2, &msg, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\t\t..::AMSend.send from %d to %u type \n", TOS_NODE_ID, address);	
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+      //dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
-    //dbg("radio_send", "\t\t..::AMSend.send from %d to %u type %u\n", sent->src, sent->dest,sent->type);	
+    //dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %u type %u\n", sent->src, sent->dest,sent->type);	
   }
 
   event void AMControl.stopDone(error_t err) {
@@ -198,9 +198,8 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* packet = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
 
-      dbg("radio_rec", "..::RECEIVE at %d type %u\n",TOS_NODE_ID, msg->type);
+      dbg_clear("radio_rec", "..::RECEIVE at %d type %u\n",TOS_NODE_ID, msg->type);
 
       /*
       divive the receive functionality by the msg type
@@ -215,13 +214,13 @@ implementation {
           this is the node the ROUTE_REQ was looking for
           Generate ROUTE_REPLY
           */
-          packet->type = ROUTE_REP;
-          packet->dest = msg->src;
-          packet->src = TOS_NODE_ID;
-          packet->value = 0;
+          msg->type = ROUTE_REP;
+          msg->dest = msg->src;
+          msg->src = TOS_NODE_ID;
+          msg->value = 0;
           generate_send(msg->dest,bufPtr,ROUTE_REP);
           dbg("radio_rec", "\t\tROUTE_REQ arrived to destination node %d\n", TOS_NODE_ID);
-          dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
+          dbg_clear("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
         } else {
           uint16_t temp_src;
           /*
@@ -235,20 +234,20 @@ implementation {
             */
 
             // create ROUTE_REP with actual routing table info
-            packet->type = ROUTE_REP;
-            packet->value = rt_hot_count[msg->dest-1];
+            msg->type = ROUTE_REP;
+            msg->value = rt_hot_count[msg->dest-1];
             // src becomes the dest and the dest the src
             temp_src=msg->src;
-            packet->src = msg->dest;
-            packet->dest = temp_src;
+            msg->src = msg->dest;
+            msg->dest = temp_src;
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-            dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
+            dbg_clear("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
           } else {
             /* 
             ROUTE_REQ not found int table
             keep looking and queue packet
             */
-            dbg("radio_rec", "\t\tROUTE_REQ to node %u not found at %d\n", msg->dest,TOS_NODE_ID);
+            dbg_clear("radio_rec", "\t\tROUTE_REQ to node %u not found at %d\n", msg->dest,TOS_NODE_ID);
             generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REQ);
           }
 
@@ -265,7 +264,7 @@ implementation {
             rt_hot_count[msg->dest-1] = msg->value;
             rt_next_hop[msg->dest-1] = msg->src;
 
-            dbg("radio_pack","\t\tTable update at node %d -> dest: %u next_hop: %u count: %u\n"
+            dbg_clear("radio_pack","\t\tTable update at node %d -> dest: %u next_hop: %u count: %u\n"
                       ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
             clear_queue(ROUTE_REQ);
           }
@@ -283,7 +282,7 @@ implementation {
           // //   generate_send(msg->dest,bufPtr,msg->type);
           // // }
           
-          return packet;
+          return bufPtr;
       }
     }
   }
