@@ -107,16 +107,15 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	actual_send (queue_addr, &queued_packet);
+  	actual_send(queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-   radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(packet, sizeof(radio_route_msg_t));
     if (rcm == NULL) {
       return;
     }
 
-    rcm->counter = counter;
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
     dbg("radio_send", "\n..::AMSend.send\n\n");	
     }
