@@ -163,7 +163,7 @@ implementation {
         msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
-        dbg("radio_rec", "\t\tRoute discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       } else {
         
           if (msg->type == DATA) {
@@ -177,7 +177,7 @@ implementation {
           } 
       }
 
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, msg, sizeof(radio_route_msg_t)) == SUCCESS) {
       //dbg("radio_send", "\t\t..::AMSend.send from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
