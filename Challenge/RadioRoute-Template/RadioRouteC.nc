@@ -114,12 +114,10 @@ implementation {
 
   event void Timer1.fired() {
     dbg("boot","\nInit timer 1\n\n");
-
-   
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\n..::AMSend.send\n");	
       dbg("radio_send", "\t\tvalue:  %d\n",packet-> value);	
       dbg("radio_send", "\t\tto:  %d\n\n",queue_addr);	
