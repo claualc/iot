@@ -268,7 +268,7 @@ implementation {
                       ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
             clear_queue(ROUTE_REQ);
           }
-
+// comentario pra n da erro tem q ver como guardar direito waiting pakcet
           // check if this is the original src node of the ROUTE_REQ
           // // if (waiting_packet->dest == msg->dest) {
           // //   // if is the same, send the packet waiting the route discovery
