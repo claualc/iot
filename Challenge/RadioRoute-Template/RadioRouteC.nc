@@ -82,10 +82,24 @@ implementation {
   }
 
  /****** EVENTS *****/
+  event void Boot.booted() {
+    dbg("boot","Application booted.\n");
+    call AMControl.start();
+  }
+
+  event void AMControl.startDone(error_t err) {
+    if (err == SUCCESS) {
+      dbg("radio","Radio on on node %d!\n", TOS_NODE_ID);
+      call Timer0.startPeriodic(250);
+    }
+    else {
+      dbgerror("radio", "Radio failed to start, retrying...\n");
+      call AMControl.start();
+    }
+  }
   
   event void Timer0.fired() {
   	/*
-  	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
     dbg("boot", "Timer0 fired");
@@ -100,32 +114,16 @@ implementation {
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg)) == SUCCESS) {
 		  dbg("radio_send", "..::AMSend.send -> FIRST READY");	
     }
-  
-  event void Boot.booted() {
-    dbg("boot","Application booted.\n");
+  }
+
+  event void AMSend.sendDone(message_t* bufPtr, error_t error) {
+			dbg("radio_send", "..::AMSend.sendDone -> PACLET SEND");	
   }
 
   event void AMControl.stopDone(error_t err) {
     dbg("boot", "Radio stopped!\n");
   }
-
-  event void AMControl.startDone(error_t err) {
-    if (err == SUCCESS) {
-      dbg("radio","Radio on on node %d!\n", TOS_NODE_ID);
-      call MilliTimer.startPeriodic(250);
-    }
-    else {
-      dbgerror("radio", "Radio failed to start, retrying...\n");
-      call AMControl.start();
-    }
-  }
   
-  // event void Timer1.fired() {
-	/*
-	* Implement here the logic to trigger the Node 1 to send the first REQ packet
-	*/
-   //}
-
   event message_t* Receive.receive(message_t* bufPtr, 
 				   void* payload, uint8_t len) {
 	/*
@@ -138,9 +136,6 @@ implementation {
     
   }
 
-  event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-			dbg("radio_send", "..::AMSend.sendDone -> PACLET SEND");	
-  }
 }
 
 
