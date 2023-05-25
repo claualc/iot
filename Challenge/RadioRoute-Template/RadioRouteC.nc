@@ -152,7 +152,6 @@ implementation {
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
       dbg("boot","..::SENDING from %d to %u type %u\n", TOS_NODE_ID, msg->dest,msg->type);
-
       /*
         if destination address not in actual routing_table
       */
