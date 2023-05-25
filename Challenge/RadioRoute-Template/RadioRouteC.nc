@@ -121,6 +121,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
+    dbg("radio_send", "\n..::AMSend.sendDone ERROR %s\n\n",error);	
     if (&packet == bufPtr) {
 			dbg("radio_send", "\n..::AMSend.sendDone -> PACKET SENT\n\n");	
     }
