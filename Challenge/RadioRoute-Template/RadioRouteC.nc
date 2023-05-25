@@ -96,6 +96,7 @@ implementation {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
       call Timer0.startPeriodic(250);
+      call Timer1.startPeriodic(250);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -113,15 +114,16 @@ implementation {
 
   event void Timer1.fired() {
     dbg("boot","\nInit timer 1\n\n");
-    actual_send(AM_BROADCAST_ADDR, &packet)
+
+    msgradio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
+    if (rcm == NULL) {
+		  return;
+    }
+    rmc->value = 5;
+    actual_send(AM_BROADCAST_ADDR, &rcm)
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg_t* &packet = (radio_route_msg_t*)call Packet.getPayload(packet, sizeof(radio_route_msg_t));
-    if (rcm == NULL) {
-      return;
-    }
-
     if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\n..::AMSend.send\n");	
       dbg("radio_send", "\t\tvalue:  %d\n",packet-> value);	
