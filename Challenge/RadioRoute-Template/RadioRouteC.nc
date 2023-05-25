@@ -36,7 +36,7 @@ implementation {
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
   
-  
+  /*****  ROUTER VARIABLES  *****/
   bool route_req_sent=FALSE;
   bool route_rep_sent=FALSE;
   
@@ -88,15 +88,18 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
+    dbg("boot", "Timer0 fired");
   	actual_send (queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-	/*
-	* Implement here the logic to perform the actual send of the packet using the tinyOS interfaces
-	*/
-	  
-  }
+    radio_route_msg* msg = (radio_route_msg*)call Packet.getPayload(&packet, sizeof(radio_route_msg));
+    if (msg == NULL) {
+		  return;
+    }
+    if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg)) == SUCCESS) {
+		  dbg("radio_send", "..::AMSend.send -> FIRST READY");	
+    }
   
   event void Boot.booted() {
     dbg("boot","Application booted.\n");
@@ -107,7 +110,14 @@ implementation {
   }
 
   event void AMControl.startDone(error_t err) {
-    /* Fill it ... */
+    if (err == SUCCESS) {
+      dbg("radio","Radio on on node %d!\n", TOS_NODE_ID);
+      call MilliTimer.startPeriodic(250);
+    }
+    else {
+      dbgerror("radio", "Radio failed to start, retrying...\n");
+      call AMControl.start();
+    }
   }
   
   // event void Timer1.fired() {
@@ -129,9 +139,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-	/* This event is triggered when a message is sent 
-	*  Check if the packet is sent 
-	*/ 
+			dbg("radio_send", "..::AMSend.sendDone -> PACLET SEND");	
   }
 }
 
