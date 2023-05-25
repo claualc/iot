@@ -151,7 +151,7 @@ implementation {
   bool actual_send(uint16_t address, message_t* packet) {
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
 
-      dbg("boot","..::SENDING from %d to  %hu\n", TOS_NODE_ID, msg->dest);
+      dbg_clear("boot","..::SENDING from %d to  %u\n", TOS_NODE_ID, msg->dest);
 
       /*
         if destination address not in actual routing_table
