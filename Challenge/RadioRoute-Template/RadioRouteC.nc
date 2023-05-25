@@ -161,16 +161,16 @@ implementation {
         waiting_packet = &bufPtr;
 
         msg->src = TOS_NODE_ID;
-        msg->type = ROUT_REQ;
+        msg->type = ROUTE_REQ;
         msg->value = NULL;
-        generate_send(AM_BROADCAST_ADDR,bufPtr,ROUT_REQ);
+        address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tRoute discovery generated from %hu to %hu\n",msg->src,msg->dest);
       } else {
         
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest];
           } else if (msg->type == ROUTE_REQ) {
-              address = AM_BROADCAST_ADDR
+              address = AM_BROADCAST_ADDR;
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->value = msg->value + 1;
@@ -205,8 +205,8 @@ implementation {
       */
       if (msg->type == DATA) {
         // add led function
-        generate_send(msg->dest, bufPtr, DATA)
-      } else if (msg->type == ROUT_REQ) {
+        generate_send(msg->dest, bufPtr, DATA);
+      } else if (msg->type == ROUTE_REQ) {
 
         if (msg->dest == TOS_NODE_ID) {
           /*
@@ -251,7 +251,7 @@ implementation {
           }
 
         } 
-      }  else if (msg->type == REPLY_REQ) {
+      }  else if (msg->type == ROUTE_REP) {
         uint16_t actual_count;
 
         /*
