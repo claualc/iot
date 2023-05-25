@@ -203,7 +203,7 @@ implementation {
 
           for (i = 0; i < NODES_COUNT; ++i) {
             if (msg->dest == rt_dest[i]){
-              dest_is_in_rt = TRUE;
+              dest_is_in_routtable = TRUE;
             }
           }
 
