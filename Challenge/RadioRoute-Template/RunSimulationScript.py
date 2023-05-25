@@ -52,8 +52,8 @@ print "Activate debug message on channel radio_send"
 t.addChannel("radio_send",out);
 print "Activate debug message on channel radio_rec\n\n"
 t.addChannel("radio_rec",out);
-print "Activate debug message on channel radio_pack"
-t.addChannel("radio_pack",out);
+#print "Activate debug message on channel radio_pack"
+#t.addChannel("radio_pack",out);
 print "\n\n\n"
 
 print "******* CREATING NODES"
@@ -100,7 +100,7 @@ print "Done!";
 for i in range(1, 8):
     print ">>>Creating noise model for node:",i;
     t.getNode(i).createNoiseModel()
-print "\n\n\n"
+
 print "Start simulation with TOSSIM! \n\n\n\n\n\n";
 
 for i in range(0,1200):
