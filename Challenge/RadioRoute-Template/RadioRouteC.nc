@@ -102,7 +102,6 @@ implementation {
   	/*
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-    dbg("boot", "\nTimer0 fired\n\n");
   	actual_send (queue_addr, &queued_packet);
   }
   
@@ -117,7 +116,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-			dbg("radio_send", "\n..::AMSend.sendDone -> PACLET SEND\n\n");	
+			dbg("radio_send", "\n..::AMSend.sendDone -> PACKET SENT\n\n");	
   }
 
   event void AMControl.stopDone(error_t err) {
