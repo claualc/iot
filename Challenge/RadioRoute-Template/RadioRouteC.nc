@@ -180,13 +180,13 @@ implementation {
       }
 
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %hu\n", TOS_NODE_ID, address);	
+      //dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %hu type \n", TOS_NODE_ID, address);	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
-    //dbg("radio_send", "\t\t..::AMSend.sendDone at time %s \n", sim_time_string());
+    dbg_clear("radio_send", "\t\t..::AMSend.send from %d to %hu type \n", sent->src, sent->dest,src->type);	
   }
 
   event void AMControl.stopDone(error_t err) {
