@@ -60,19 +60,23 @@ implementation {
   * MANDATORY: DO NOT MODIFY THIS FUNCTION
   */
   	if (call Timer0.isRunning()){
+      dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
   	}else{
   	if (type == 1 && !route_req_sent ){
+      dbg("radio_rec", "type == 1 && !route_req_sent");
   		route_req_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == 2 && !route_rep_sent){
-  	  	route_rep_sent = TRUE;
+      dbg("radio_rec", "type == 2 && !route_rep_sent");
+  	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == 0){
+      dbg("radio_rec", "type == 0");
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;	
@@ -117,7 +121,9 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
+    if (&packet == bufPtr) {
 			dbg("radio_send", "\n..::AMSend.sendDone -> PACKET SENT\n\n");	
+    }
   }
 
   event void AMControl.stopDone(error_t err) {
