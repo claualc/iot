@@ -177,7 +177,7 @@ implementation {
           } 
       }
 
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
@@ -197,13 +197,13 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
-      dbg("radio_rec", "..::RECEIVE at %d -> dest %hhu src %hhu type %hhu\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %hu src %hu type %hu\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
       /*
       divive the receive functionality by the msg type
       */
       if (msg->type == DATA) {
         // add led function
-        generate_send(msg->dest, bufPtr, DATA);
+        generate_send(msg->dest, msg, DATA);
       } else if (msg->type == ROUTE_REQ) {
 
         if (msg->dest == TOS_NODE_ID) {
