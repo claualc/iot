@@ -107,8 +107,8 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	actual_send(AM_BROADCAST_ADDR, &packet);
-    
+  	//actual_send(queue_addr, &queued_packet);
+  	actual_send(2, packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
