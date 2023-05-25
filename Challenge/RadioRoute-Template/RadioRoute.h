@@ -19,7 +19,7 @@ typedef nx_struct radio_route_msg {
 		if ROUTE_REQ - none
 		if REPLY_REQ - hop_count
 	*/
-	nx_int8_t value;
+	nx_int32_t value;
 } radio_route_msg_t;
 
 enum {

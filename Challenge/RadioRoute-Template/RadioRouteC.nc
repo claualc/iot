@@ -122,7 +122,7 @@ implementation {
     if (rcm == NULL) {
 		  return;
     }
-    rcm ->value=5;
+    rcm->value=5;
 
     if (call AMSend.send(AM_BROADCAST_ADDR, rcm, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\n..::AMSend.send to %d\n", address);	
