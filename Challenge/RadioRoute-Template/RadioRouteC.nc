@@ -119,7 +119,7 @@ implementation {
     if (rcm == NULL) {
 		  return;
     }
-    rmc->value = 5;
+    rcm->value = 5;
     actual_send(AM_BROADCAST_ADDR, rcm)
   }
   
