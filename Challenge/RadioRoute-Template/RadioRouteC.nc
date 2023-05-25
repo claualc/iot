@@ -134,7 +134,11 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       
       dbg("radio_rec", "..::Receive.receive: value %d\n",msg->value);
+
+      return bufPtr;
     }
+
+    
   }
 
 }
