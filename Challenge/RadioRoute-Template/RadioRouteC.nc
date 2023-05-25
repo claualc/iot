@@ -128,18 +128,11 @@ implementation {
       dbg("boot","\nInit timer 1\n\n");
       actual_send(AM_BROADCAST_ADDR,&packet)
     }
-
   }
   
   bool actual_send(uint16_t address, message_t* packet){
-    radio_route_msg_t* rcm = (radio_route_msg_t*)packet;
-    if (rcm == NULL) {
-		  return;
-    }
-    rcm->value=5;
-
-    if (call AMSend.send(AM_BROADCAST_ADDR, rcm, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\n..::AMSend.send to %d\n", address);	
+    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+      dbg("radio_send", "\n..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
     }
   }
 
