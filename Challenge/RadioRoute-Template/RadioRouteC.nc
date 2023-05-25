@@ -118,7 +118,7 @@ implementation {
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
-      call Timer1.startPeriodic(1000);
+      call Timer1.startPeriodic(10000);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
