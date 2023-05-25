@@ -37,7 +37,7 @@ implementation {
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
 
-  message_t waiting_packet;
+  message_t* waiting_packet;
 
 
   /*****  CONSTANTS  *****/
@@ -158,7 +158,7 @@ implementation {
       */
       if (rt_next_hop[msg->dest] == NULL) {
         // hold on DATA packet and do a route discovery
-        waiting_packet = *packet;
+        waiting_packet = packet;
 
         msg->src = TOS_NODE_ID;
         msg->type = ROUTE_REQ;
@@ -198,7 +198,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* stored_packet = &waiting_packet;
+      radio_route_msg_t* stored_packet = waiting_packet;
 
       dbg_clear("radio_rec", "..::RECEIVE at %d type %hu\n",TOS_NODE_ID, msg->type);
 
