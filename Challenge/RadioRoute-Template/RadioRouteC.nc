@@ -88,6 +88,7 @@ implementation {
  /****** EVENTS *****/
   event void Boot.booted() {
     dbg("boot","\nNode booted %d.\n\n",TOS_NODE_ID);
+    dbg("radio_rec", "radio_rec");
     call AMControl.start();
   }
 
@@ -116,7 +117,7 @@ implementation {
     }
     msg->value = 253;
     if (call AMSend.send(1, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY\n");	
+		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
     }
   }
 
@@ -132,7 +133,7 @@ implementation {
   }
   
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
-     dbg("boot", "..::Receive.receive len= %hhu ",call Packet.payloadLength( bufPtr ));
+     dbg("radio_rec", "..::Receive.receive ");
     if (len != sizeof(radio_route_msg_t)) {
       dbg("radio_rec", "..::Receive.receive: ERROR: length of buffer incorrect\n");
       return bufPtr;
