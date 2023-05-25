@@ -107,30 +107,18 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	//actual_send (queue_addr, &queued_packet);
-    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-      if (rcm == NULL) {
-		return;
-      }
-
-      radio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
-      if (rcm == NULL) {
-		return;
-      }
-
-      rcm->counter = counter;
-      if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_toss_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::AMSend.send\n\n");	
-    }
+  	actual_send (queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    if (msg == NULL) {
-		  return;
+   radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+    if (rcm == NULL) {
+      return;
     }
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
+
+    rcm->counter = counter;
+    if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    dbg("radio_send", "\n..::AMSend.send\n\n");	
     }
   }
 
