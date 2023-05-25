@@ -99,8 +99,7 @@ implementation {
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
-      //call Timer0.startPeriodic(1000);
-      call Timer1.startPeriodic(10000);
+      call Timer1.startPeriodic(1000000);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -132,7 +131,11 @@ implementation {
   
   bool actual_send(uint16_t address, message_t* packet){
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
+      dbg("radio_pack","\t type %d \n", sent->type);
+      dbg("radio_pack","\t src  %d \n", sent->src);
+      dbg("radio_pack","\t dest %d \n", sent->dest);
     }
   }
 
