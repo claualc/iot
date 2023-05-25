@@ -153,7 +153,6 @@ implementation {
       } 
 
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
     }
   }
