@@ -107,11 +107,11 @@ implementation {
   }
   
   bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg* msg = (radio_route_msg*)call Packet.getPayload(&packet, sizeof(radio_route_msg));
+    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
     if (msg == NULL) {
 		  return;
     }
-    if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg)) == SUCCESS) {
+    if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
 		  dbg("radio_send", "..::AMSend.send -> FIRST READY");	
     }
   }
