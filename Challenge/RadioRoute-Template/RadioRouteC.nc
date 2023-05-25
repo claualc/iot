@@ -158,7 +158,7 @@ implementation {
       */
       if (rt_next_hop[msg->dest] == NULL) {
         // hold on DATA packet and do a route discovery
-        waiting_packet = &bufPtr;
+        waiting_packet = *packet;
 
         msg->src = TOS_NODE_ID;
         msg->type = ROUTE_REQ;
@@ -269,10 +269,10 @@ implementation {
       }
 
       // check if this is the original src node of the ROUTE_REQ
-      if (waiting_packet->dest == msg->dest) {
+      if ((&waiting_packet)->dest == msg->dest) {
         // if is the same, send the packet waiting the route discovery
         clear_queue(ROUT_REQ); // request done
-        generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
+        generate_send((&waiting_packet)->dest,&waiting_packet,&waiting_packet->TYPE);
       } else {
         /* this is the original node who 
           requested the route discovery.
