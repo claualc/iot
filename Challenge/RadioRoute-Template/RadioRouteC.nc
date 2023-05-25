@@ -123,7 +123,7 @@ implementation {
     msg->src = 1;
     msg->dest = 7;
     dbg("boot","\nInit timer 1\n\n");
-    generate_send(AM_BROADCAST_ADDR,&msg,1)
+    generate_send(AM_BROADCAST_ADDR,*msg,1)
   }
   
   bool actual_send(uint16_t address, message_t* packet){
