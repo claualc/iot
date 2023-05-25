@@ -163,6 +163,7 @@ implementation {
         msg->type = ROUTE_REQ;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
+        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       } else {
         
           if (msg->type == DATA) {
@@ -175,11 +176,10 @@ implementation {
               address = rt_next_hop[msg->dest-1];
           } 
       }
-      
-      dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
-      if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-        dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
-      }
+
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+    }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
@@ -197,7 +197,7 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
-      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %hhu src %hhu type %hhu\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
       /*
       divive the receive functionality by the msg type
       */
