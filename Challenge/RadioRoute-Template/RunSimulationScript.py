@@ -32,7 +32,7 @@ t.init();
 
 #out = open(simulation_outfile, "w");
 out = sys.stdout;
-
+print "******* CHANNEL DEBUGING"
 #Add debug channel
 #print "Activate debug message on channel init"
 #t.addChannel("init",out);
@@ -50,20 +50,21 @@ print "Activate debug message on channel radio"
 t.addChannel("radio",out);
 print "Activate debug message on channel radio_send"
 t.addChannel("radio_send",out);
-print "Activate debug message on channel radio_rec"
+print "Activate debug message on channel radio_rec\n\n"
 t.addChannel("radio_rec",out);
 #print "Activate debug message on channel radio_pack"
 #t.addChannel("radio_pack",out);
+print "\n\n\n"
 
-
+print "******* CREATING NODES"
 for i in range(1, 8):
-    print ">>>Creating node:",i;
+    print ">>>Node:",i;
     node =t.getNode(i);
     time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
     node.bootAtTime(time);
-    print ">>>Will boot at time",  time/t.ticksPerSecond(), "[sec]";
+print "\n\n\n"
 
-print "Creating radio channels..."
+print "******* CREATING LINKS (radio channels)"
 f = open(topofile, "r");
 lines = f.readlines()
 for line in lines:
@@ -71,7 +72,7 @@ for line in lines:
     if (len(s) > 0):
         print ">>>Setting radio channel from node ", s[0], " to node ", s[1], " with gain ", s[2], " dBm"
         radio.add(int(s[0]), int(s[1]), float(s[2]))
-
+print "\n\n\n"
 
 #creation of channel model
 print "Initializing Closest Pattern Matching (CPM)...";
@@ -99,7 +100,7 @@ print "Done!";
 for i in range(1, 8):
     print ">>>Creating noise model for node:",i;
     t.getNode(i).createNoiseModel()
-
+print "\n\n\n"
 print "Start simulation with TOSSIM! \n\n\n\n\n\n";
 
 for i in range(0,1200):

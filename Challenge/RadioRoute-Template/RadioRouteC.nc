@@ -83,7 +83,7 @@ implementation {
 
  /****** EVENTS *****/
   event void Boot.booted() {
-    dbg("boot","\nNode booted.\n\n");
+    dbg("boot","\nNode booted %d.\n\n"TOS_NODE_ID);
     call AMControl.start();
   }
 
@@ -112,6 +112,7 @@ implementation {
     }
     msg->value = 253;
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY");	
 		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY");	
     }
   }
