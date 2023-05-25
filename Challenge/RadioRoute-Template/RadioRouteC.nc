@@ -96,7 +96,7 @@ implementation {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
       call Timer0.startPeriodic(250);
-      call Timer1.startPeriodic(250);
+     // call Timer1.startPeriodic(250);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
