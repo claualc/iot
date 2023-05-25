@@ -120,13 +120,12 @@ implementation {
     // create ROUTE_REQ msg
 
     if (TOS_NODE_ID == 1) {
-       dbg("boot","\nSENDING FRIST PACKET\n\n");
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = 1;
       msg->src = 1;
       msg->dest = 7;
 
-     
+      dbg("boot","\nSENDING FRIST PACKET\n\n");
       actual_send(AM_BROADCAST_ADDR,&packet);
     }
   }
