@@ -152,9 +152,9 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)bufPtr;
 
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
-      dbg("radio_pack","\t type %hu \n", msg->type);
-      dbg("radio_pack","\t src  %hu \n", msg->src);
-      dbg("radio_pack","\t dest %hu \n", msg->dest);
+      dbg("radio_pack","\t type %hhu \n", msg->type);
+      dbg("radio_pack","\t src  %hhu \n", msg->src);
+      dbg("radio_pack","\t dest %hhu \n", msg->dest);
       
       return bufPtr;
     }
