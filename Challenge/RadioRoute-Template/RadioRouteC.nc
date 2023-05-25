@@ -106,6 +106,7 @@ implementation {
   	/*
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
+  	actual_send (queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
@@ -114,7 +115,7 @@ implementation {
 		  return;
     }
     msg->value = 253;
-    if (call AMSend.send(1, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
 		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
     }
   }
