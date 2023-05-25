@@ -150,7 +150,7 @@ implementation {
       dbg("radio_pack",">>>Pack \n \t Payload length %hhu \n", call Packet.payloadLength( bufPtr ));
       
       dbg_clear("radio_pack","\t\t Payload \n" );
-      dbg_clear("radio_pack", "\t\t msg_counter: %hhu \n", rcm->counter);
+      dbg_clear("radio_pack", "\t\t value: %hhu \n", rcm->value);
       return bufPtr;
     }
     
