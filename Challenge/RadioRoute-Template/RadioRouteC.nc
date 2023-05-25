@@ -160,7 +160,7 @@ implementation {
         waiting_packet = *packet;
 
         msg->src = TOS_NODE_ID;
-        msg->type = ROUTE_REQ;
+        msg->type = 6;
         msg->value = NULL;
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
