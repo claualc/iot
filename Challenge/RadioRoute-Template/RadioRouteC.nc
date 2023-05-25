@@ -106,7 +106,6 @@ implementation {
   	/*
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	actual_send (queue_addr, &queued_packet);
   }
   
   bool actual_send (uint16_t address, message_t* packet){
