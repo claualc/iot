@@ -107,7 +107,11 @@ implementation {
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-  	//actual_send (queue_addr, &queued_packet);
+  	actual_send (queue_addr, &queued_packet);
+    
+  }
+  
+  bool actual_send (uint16_t address, message_t* packet){
     radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       if (rcm == NULL) {
 		return;
@@ -118,16 +122,6 @@ implementation {
 		dbg("radio_send", "Sending packet");	
 		dbg_clear("radio_send", " at time %s \n", sim_time_string());
       }
-  }
-  
-  bool actual_send (uint16_t address, message_t* packet){
-    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-    if (msg == NULL) {
-		  return;
-    }
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "\n..::actual_send -> FIRST READY\n");	
-    }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
