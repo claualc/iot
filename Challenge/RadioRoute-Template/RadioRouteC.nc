@@ -197,7 +197,7 @@ implementation {
     dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
-      radio_route_msg_t* msg = (radio_route_msg_t*)payload;
+      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));;
       radio_route_msg_t* packet = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
 
       dbg("radio_rec", "..::RECEIVE at %d from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest, msg->type);
