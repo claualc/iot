@@ -145,6 +145,19 @@ implementation {
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
       actual_send(msg->dest, msg);
+
+
+      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+      if (rcm == NULL) {
+		    return;
+      }
+
+      msg->type = DATA;
+      msg->src = 1;
+      msg->dest = 7;
+      if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+        dbg("radio_send", "Sending packet");	
+      }
     }
   }
   
@@ -177,14 +190,12 @@ implementation {
           } 
       }
 
-    if (call AMSend.send(2, msg, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));
-    dbg("radio_send", "\t\t..::SENT DONE -> from %u to %u type %u\n", sent->src, sent->dest,sent->type);	
   }
 
   event void AMControl.stopDone(error_t err) {
