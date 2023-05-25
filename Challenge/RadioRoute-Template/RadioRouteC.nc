@@ -120,7 +120,7 @@ implementation {
     /* Fill it ... */
   }
   
-  event void Timer1.fired() {
+  event void Timer0.fired() {
 	/*
 	* Implement here the logic to trigger the Node 1 to send the first REQ packet
 	*/
