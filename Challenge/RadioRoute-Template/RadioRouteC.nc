@@ -116,7 +116,7 @@ implementation {
       return;
     }
 
-    if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
     dbg("radio_send", "\n..::AMSend.send\n\n");	
     }
   }
