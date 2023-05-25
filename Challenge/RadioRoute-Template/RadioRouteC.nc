@@ -120,12 +120,13 @@ implementation {
     // create ROUTE_REQ msg
 
     if (TOS_NODE_ID == 1) {
+       dbg("boot","\nSENDING FRIST PACKET\n\n");
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = 1;
       msg->src = 1;
       msg->dest = 7;
 
-      dbg("boot","\nInit timer 1\n\n");
+     
       actual_send(AM_BROADCAST_ADDR,&packet);
     }
   }
@@ -137,9 +138,9 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
-    dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
-    dbg("radio_send", "\t\tvalue: %d \n", sent->value);
+    //radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
+    //dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
+    //dbg("radio_send", "\t\tvalue: %d \n", sent->value);
   }
 
   event void AMControl.stopDone(error_t err) {
@@ -150,7 +151,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      
+
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
       dbg("radio_pack",">>>Pack \n \t type %d \n", msg->type);
       dbg("radio_pack",">>>Pack \n \t src  %d \n", msg->src);
