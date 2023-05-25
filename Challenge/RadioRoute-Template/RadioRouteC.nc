@@ -113,11 +113,15 @@ implementation {
 		return;
       }
 
-      rcm->value = 9;
-      if (call AMSend.send(AM_BROADCAST_ADDR, &rcm, sizeof(radio_route_msg_t)) == SUCCESS) {
-		dbg("radio_send", "Sending packet");	
-		dbg_clear("radio_send", " at time %s \n", sim_time_string());
+      radio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
+      if (rcm == NULL) {
+		return;
       }
+
+      rcm->counter = counter;
+      if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_toss_msg_t)) == SUCCESS) {
+		  dbg("radio_send", "\n..::AMSend.send\n\n");	
+    }
   }
   
   bool actual_send (uint16_t address, message_t* packet){
@@ -131,10 +135,7 @@ implementation {
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    if (&packet == bufPtr) {
-      dbg("radio_send", "Packet sent...");
-      dbg_clear("radio_send", " at time %s \n", sim_time_string());
-    }
+    dbg_clear("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
   }
 
   event void AMControl.stopDone(error_t err) {
