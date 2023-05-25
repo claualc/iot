@@ -140,7 +140,7 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = DATA;
       msg->src = 1;
-      msg->dest = 7;
+      msg->dest = 3;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
       actual_send(msg->dest, &packet);
