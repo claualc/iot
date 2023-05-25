@@ -200,7 +200,7 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       radio_route_msg_t* packet = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
 
-      dbg("radio_rec", "..::RECEIVE at %d type %u\n",TOS_NODE_ID, msg->type);
+      dbg("radio_rec", "..::RECEIVE at %d from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest, msg->type);
 
       /*
       divive the receive functionality by the msg type
