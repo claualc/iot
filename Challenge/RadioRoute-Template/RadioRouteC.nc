@@ -271,17 +271,17 @@ implementation {
       }
 
       // check if this is the original src node of the ROUTE_REQ
-      if (waiting_packet->dest == msg->dest) {
-        // if is the same, send the packet waiting the route discovery
-        clear_queue(ROUTE_REQ); // request done
-        generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
-      } else {
-        /* this is the original node who 
-          requested the route discovery.
-          Send its data packet
-        */
-        generate_send(msg->dest,bufPtr,msg->type);
-      }
+      // // if (waiting_packet->dest == msg->dest) {
+      // //   // if is the same, send the packet waiting the route discovery
+      // //   clear_queue(ROUTE_REQ); // request done
+      // //   generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
+      // // } else {
+      // //   /* this is the original node who 
+      // //     requested the route discovery.
+      // //     Send its data packet
+      // //   */
+      // //   generate_send(msg->dest,bufPtr,msg->type);
+      // // }
       
       return bufPtr;
     }
