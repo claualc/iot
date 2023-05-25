@@ -126,7 +126,7 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","\nInit timer 1\n\n");
-      actual_send(AM_BROADCAST_ADDR,&packet)
+      actual_send(AM_BROADCAST_ADDR,&packet);
     }
   }
   
@@ -149,7 +149,7 @@ implementation {
   event message_t* Receive.receive(message_t* bufPtr, void* payload, uint8_t len) {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
-      radio_route_msg_t* rcm = (radio_route_msg_t*)payload;
+      radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
       dbg("radio_pack",">>>Pack \n \t type %d \n", msg->type);
