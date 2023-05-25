@@ -37,6 +37,8 @@ implementation {
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
 
+  message_t waiting_packet;
+
 
   /*****  CONSTANTS  *****/
   uint16_t NODES_COUNT = 7;
@@ -203,8 +205,7 @@ implementation {
         if (rt_next_hop[msg->dest] == NULL) {
           // hold on DATA packet and do a route discovery
           route_req_sent = TRUE;
-          queue_addr = msg->dest;
-          queued_packet = &msg;
+          waiting_packet = &bufPtr;
 
           msg->src = TOS_NODE_ID;
           msg->type = ROUT_REQ;
@@ -257,8 +258,7 @@ implementation {
               keep looking and queue packet
               */
               route_req_sent = TRUE;
-              queue_addr = msg->dest;
-              queued_packet = &msg;
+              waiting_packet = &bufPtr;
               generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REQ);
             }
         } 
@@ -269,7 +269,7 @@ implementation {
       /*
       Save data on table if empty or acrual count biguer
       */
-      q_dest_a = queued_packet->dest;
+      q_dest_a = waiting_packet->dest;
       uint16_t actual_count = rt_hot_count[q_dest_a];
       if (actual_count==NULL || actual_count>msg->value) {
         // update route in current table
