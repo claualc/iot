@@ -147,11 +147,6 @@ implementation {
       actual_send(msg->dest, msg);
 
 
-      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-
-      msg->type = DATA;
-      msg->src = 1;
-      msg->dest = 7;
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
         dbg("radio_send", "Sending packet");	
       }
