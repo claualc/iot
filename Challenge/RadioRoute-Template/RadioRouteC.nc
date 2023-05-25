@@ -37,6 +37,9 @@ implementation {
   uint16_t queue_addr;
   uint16_t time_delays[7]={61,173,267,371,479,583,689}; //Time delay in milli seconds
 
+  /*****  CONSTANTS  *****/
+  uint16_t NODES_COUNT = 7;
+
   /*****  ROUTING TABLE  *****/
   uint16_t rt_dest[7];
   uint16_t rt_next_hop[7];
@@ -129,7 +132,26 @@ implementation {
     }
   }
   
-  bool actual_send(uint16_t address, message_t* packet){
+  bool actual_send(uint16_t address, message_t* packet) {
+    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+
+    if (msg->type == 0) {
+        // 0 - DATA MSG
+        // just send
+      } 
+      else if (msg->type == 1) {
+        // 1 - ROUTE_REQ MSG
+        // add to route queue and send /generate send
+      } 
+      else {
+        // 	2 - REPLY_REQ
+
+        // add +1 in hopcount before sending
+        msg->value = msg->value + 1;
+        // send to queue packet and pop it
+
+      } 
+
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
@@ -155,6 +177,52 @@ implementation {
       dbg("radio_pack","\t type %hhu \n", msg->type);
       dbg("radio_pack","\t src  %hhu \n", msg->src);
       dbg("radio_pack","\t dest %hhu \n", msg->dest);
+
+      if (msg->type == 0) {
+      // 0 - DATA MSG
+
+      // led
+      // send to nex hop if needed
+
+      } 
+      else if (msg->type == 1) {
+      // 1 - ROUTE_REQ MSG
+
+       if (msg->dest == TOS_NODE_ID) {
+          /*
+           ROUTE REPLY: this is the node the ROUTE_REQ
+           was looking for
+          */
+        } else {
+          /*
+          check if ROUT_REQ dest is in actual routing_table
+          */
+
+          bool dest_is_in_routtable = FALSE;
+          for (i = 0; i < NODES_COUNT; ++i) {
+            if (msg->dest == rt_dest[i]){
+              dest_is_in_rt = TRUE;
+            }
+          }
+
+          if (dest_is_in_routtable) {
+            /* 
+             ROUTE REPLY with hop_count value +1 of the table
+            */
+          } else {
+            // dest not found yet, keep looking with BROADCASTS
+          }
+      } 
+      else {
+      // 	2 - REPLY_REQ
+
+      // save the data on the table
+      //    save only if queue_packet and has the same dest
+      //    save only if hop count is smaller than the actual
+
+      // send the next reply msg if needed
+        
+      } 
       
       return bufPtr;
     }
