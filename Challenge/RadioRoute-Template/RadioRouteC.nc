@@ -106,7 +106,7 @@ implementation {
     dbg("boot", "Radio stopped!\n");
   }
 
-  event void AMControl.stopDone(error_t err) {
+  event void AMControl.startDone(error_t err) {
     /* Fill it ... */
   }
   
