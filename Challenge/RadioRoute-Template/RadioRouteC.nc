@@ -83,17 +83,17 @@ implementation {
 
  /****** EVENTS *****/
   event void Boot.booted() {
-    dbg("boot","Application booted.\n");
+    dbg("boot","\nApplication booted.\n\n");
     call AMControl.start();
   }
 
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
-      dbg("radio","Radio on on node %d!\n", TOS_NODE_ID);
+      dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
       call Timer0.startPeriodic(250);
     }
     else {
-      dbgerror("radio", "Radio failed to start, retrying...\n");
+      dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
       call AMControl.start();
     }
   }
@@ -102,7 +102,7 @@ implementation {
   	/*
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
   	*/
-    dbg("boot", "Timer0 fired");
+    dbg("boot", "\nTimer0 fired\n\n");
   	actual_send (queue_addr, &queued_packet);
   }
   
@@ -112,16 +112,16 @@ implementation {
 		  return;
     }
     if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-		  dbg("radio_send", "..::AMSend.send -> FIRST READY");	
+		  dbg("radio_send", "\n..::AMSend.send -> FIRST READY");	
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-			dbg("radio_send", "..::AMSend.sendDone -> PACLET SEND");	
+			dbg("radio_send", "\n..::AMSend.sendDone -> PACLET SEND\n\n");	
   }
 
   event void AMControl.stopDone(error_t err) {
-    dbg("boot", "Radio stopped!\n");
+    dbg("boot", "\nRadio stopped!\n");
   }
   
   event message_t* Receive.receive(message_t* bufPtr, 
