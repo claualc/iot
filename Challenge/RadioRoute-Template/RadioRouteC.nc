@@ -124,7 +124,7 @@ implementation {
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     dbg_clear("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
-    radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(&bufPtr, sizeof(radio_route_msg_t));
+    radio_route_msg_t* sent = (radio_route_msg_t*)call Packet.getPayload(bufPtr, sizeof(radio_route_msg_t));
     dbg("radio_send", "\t\tvalue:  %d\n",sent-> value);	
   }
 
