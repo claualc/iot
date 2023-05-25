@@ -133,18 +133,12 @@ implementation {
     if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
-      dbg("radio_pack","\t type %hhu \n", msg->type);
-      dbg("radio_pack","\t src  %hhu \n", msg->src);
-      dbg("radio_pack","\t dest %hhu \n", msg->dest);
     }
   }
 
   event void AMSend.sendDone(message_t* bufPtr, error_t error) {
     radio_route_msg_t* sent = (radio_route_msg_t*)bufPtr;
     dbg("radio_send", "..::AMSend.sendDone at time %s \n", sim_time_string());
-    dbg("radio_pack","\t type %hhu \n", sent->type);
-    dbg("radio_pack","\t src  %hhu \n", sent->src);
-    dbg("radio_pack","\t dest %hhu \n", sent->dest);
   }
 
   event void AMControl.stopDone(error_t err) {
@@ -158,9 +152,9 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)bufPtr;
 
       dbg("radio_rec", "Received packet at time %s\n", sim_time_string());
-      dbg("radio_pack",">>>Pack \n \t type %d \n", msg->type);
-      dbg("radio_pack",">>>Pack \n \t src  %d \n", msg->src);
-      dbg("radio_pack",">>>Pack \n \t dest %d \n", msg->dest);
+      dbg("radio_pack",">>>Pack \n \t type %hu \n", msg->type);
+      dbg("radio_pack",">>>Pack \n \t src  %hu \n", msg->src);
+      dbg("radio_pack",">>>Pack \n \t dest %hu \n", msg->dest);
       
       return bufPtr;
     }
