@@ -115,7 +115,7 @@ implementation {
   event void Timer1.fired() {
     dbg("boot","\nInit timer 1\n\n");
 
-    msgradio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
+    radio_route_msg_t* rcm = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
     if (rcm == NULL) {
 		  return;
     }
