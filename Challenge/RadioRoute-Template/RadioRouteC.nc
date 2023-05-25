@@ -130,12 +130,12 @@ implementation {
   }
   
   bool actual_send(uint16_t address, message_t* packet){
-    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       dbg("radio_send", "..::AMSend.send from %d to %d\n", TOS_NODE_ID, address);	
-      dbg("radio_pack","\t type %d \n", sent->type);
-      dbg("radio_pack","\t src  %d \n", sent->src);
-      dbg("radio_pack","\t dest %d \n", sent->dest);
+      dbg("radio_pack","\t type %d \n", msg->type);
+      dbg("radio_pack","\t src  %d \n", msg->src);
+      dbg("radio_pack","\t dest %d \n", msg->dest);
     }
   }
 
