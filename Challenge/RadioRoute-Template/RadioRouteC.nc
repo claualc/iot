@@ -155,7 +155,7 @@ implementation {
           // hold on DATA packet and do a route discovery
           dbg("radio_rec", "\t\tPacket queue in the waiting list at %d dest %u src %u type %u\n",TOS_NODE_ID,msg->dest,msg->src,msg->type);
 
-          waiting_packet = msg;
+          waiting_packet = *msg;
         }
 
         msg->src = TOS_NODE_ID;
@@ -192,7 +192,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* waiting_data_packet = &waiting_packet;
+      radio_route_msg_t* waiting_data_packet = waiting_packet;
 
       /*
       divive the receive functionality by the msg type
