@@ -208,7 +208,7 @@ implementation {
         if (rt_next_hop[msg->src-1] == NULL) {
             rt_next_hop[msg->src-1] = msg->src;
             rt_hot_count[msg->src-1] = 1;
-            dbg("radio_rec", "..::UPDATE TABLE at %d -> next_hop %u count %u\n",TOS_NODE_ID, msg->src,1);
+            dbg("radio_rec", "..::UPDATE TABLE at %d -> final dest %u next_hop %u count %u\n",TOS_NODE_ID,msg->src, msg->src,1);
         }
 
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
@@ -246,7 +246,7 @@ implementation {
             msg->src = msg->dest;
             msg->dest = temp_src;
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-            dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
+            dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d\n",msg->src,msg->dest, TOS_NODE_ID);
             generate_send(msg->dest,bufPtr,msg->type);
           } else {
             /* 
@@ -262,9 +262,8 @@ implementation {
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
           
-
           /*
-            Save data on table if empty or acrual count biguer
+            Save data on table if empty or actual count biguer
           */
           actual_count = rt_hot_count[msg->dest-1];
           if (actual_count==NULL || actual_count>msg->value) {
@@ -276,19 +275,19 @@ implementation {
                       ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
             clear_queue(ROUTE_REQ);
           }
-// comentario pra n da erro tem q ver como guardar direito waiting pakcet
+
           // check if this is the original src node of the ROUTE_REQ
-          // // if (waiting_packet->dest == msg->dest) {
-          // //   // if is the same, send the packet waiting the route discovery
-          // //   clear_queue(ROUTE_REQ); // request done
-          // //   generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
-          // // } else {
-          // //   /* this is the original node who 
-          // //     requested the route discovery.
-          // //     Send its data packet
-          // //   */
-          // //   generate_send(msg->dest,bufPtr,msg->type);
-          // // }
+          if (waiting_packet->dest == msg->dest) {
+            // if is the same, send the packet waiting the route discovery
+            clear_queue(ROUTE_REQ); // request done
+            generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
+          } else {
+            /* this is the original node who 
+              requested the route discovery.
+              Send its data packet
+            */
+            generate_send(msg->dest,bufPtr,msg->type);
+          }
       }
       return bufPtr;
     }
