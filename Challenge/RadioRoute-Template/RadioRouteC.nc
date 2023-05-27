@@ -192,7 +192,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* waiting_data_packet = (radio_route_msg_t*)call Packet.getPayload(&waiting_packet, sizeof(radio_route_msg_t));;
+      radio_route_msg_t* waiting_data_packet = (radio_route_msg_t*)call Packet.getPayload(waiting_packet, sizeof(radio_route_msg_t));;
 
       /*
       divive the receive functionality by the msg type
