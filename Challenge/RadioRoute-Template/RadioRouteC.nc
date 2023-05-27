@@ -261,7 +261,7 @@ implementation {
             rt_hot_count[msg->src-1] = msg->value;
             rt_next_hop[msg->src-1] = msg->src;
 
-            dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->value );
+            dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,msg->value );
           }
 
           msg->type = ROUTE_REP;
