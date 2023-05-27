@@ -155,7 +155,7 @@ implementation {
       */
       if (rt_next_hop[new_msg->dest-1] == NULL) {
         // hold on DATA packet and do a route discovery
-        waiting_packet = *packet;
+        waiting_packet = *packett;
 
         new_msg->src = TOS_NODE_ID;
         new_msg->type = ROUTE_REQ;
