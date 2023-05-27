@@ -169,7 +169,6 @@ implementation {
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
-              msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
@@ -214,6 +213,7 @@ implementation {
           msg->type = ROUTE_REP;
           msg->dest = NULL; // ????
           msg->value = 0;
+          msg->src = TOS_NODE_ID;
 
           if (!route_rep_sent) {
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
@@ -234,6 +234,7 @@ implementation {
             // create ROUTE_REP with actual routing table info
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
+            msg->src = msg->dest;
             msg->dest = NULL; //?????
 
             if (!route_rep_sent) {
