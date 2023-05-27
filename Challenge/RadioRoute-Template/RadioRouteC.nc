@@ -244,7 +244,7 @@ implementation {
             keep looking and queue packet
             */
             dbg("radio_rec", "\t\tROUTE_REQ to node %u not found at %d\n", msg->dest,TOS_NODE_ID);
-            generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REQ);
+            generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
 
         } 
