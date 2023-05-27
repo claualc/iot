@@ -146,12 +146,12 @@ implementation {
       //if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
       //  dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, AM_BROADCAST_ADDR);	
       //}
-      actual_send(msg->dest, msg);
+      actual_send(msg->dest, &packet);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packett) {
-      radio_route_msg_t* msg = (radio_route_msg_t*)packett;
+      radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packett, sizeof(radio_route_msg_t));;
       dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
 
       /*
@@ -177,7 +177,7 @@ implementation {
       //     } 
       // }
       address = AM_BROADCAST_ADDR;
-    if (call AMSend.send(address, msg, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &packett, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
