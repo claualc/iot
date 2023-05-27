@@ -237,6 +237,7 @@ implementation {
             msg->dest = temp_src;
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
             dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
+            generate_send(msg->dest,bufPtr,ROUTE_REP);
           } else {
             /* 
             ROUTE_REQ not found int table
