@@ -98,7 +98,7 @@ implementation {
     if (locked) {
       return;
     }
-    else {
+    else { // SEND BROADCAST
       radio_toss_msg_t* rcm = (radio_toss_msg_t*)call Packet.getPayload(&packet, sizeof(radio_toss_msg_t));
       if (rcm == NULL) {
 		    return;
