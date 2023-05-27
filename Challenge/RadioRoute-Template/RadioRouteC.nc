@@ -169,7 +169,7 @@ implementation {
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
-              //msg->src = TOS_NODE_ID;
+              msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
@@ -193,8 +193,7 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       radio_route_msg_t* waiting_data_packet = (radio_route_msg_t*)call Packet.getPayload(&waiting_packet, sizeof(radio_route_msg_t));
-      uint16_t temp_src;
-      
+
       /*
       divive the receive functionality by the msg type
       */
@@ -203,7 +202,6 @@ implementation {
         // add led function
         generate_send(rt_next_hop[msg->dest-1], bufPtr, DATA);
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
-        
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
         //ignore backwards broadcast form next node
@@ -214,9 +212,7 @@ implementation {
           Generate ROUTE_REPLY
           */
           msg->type = ROUTE_REP;
-          temp_src = msg->src;
-          msg->src = msg->dest;
-          msg->dest = temp_src;
+          msg->dest = NULL; // ????
           msg->value = 0;
 
           if (!route_rep_sent) {
@@ -238,9 +234,7 @@ implementation {
             // create ROUTE_REP with actual routing table info
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
-            temp_src = msg->src;
-            msg->src = msg->dest;
-            msg->dest = temp_src; //?????
+            msg->dest = NULL; //?????
 
             if (!route_rep_sent) {
               dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
@@ -309,9 +303,7 @@ implementation {
           } else {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
-            temp_src = msg->src;
-            msg->src = msg->dest;
-            msg->dest = temp_src;
+            msg->dest = NULL; //?????
             generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
       }
