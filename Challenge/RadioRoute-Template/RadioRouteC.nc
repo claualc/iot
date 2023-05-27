@@ -147,7 +147,8 @@ implementation {
     }
   }
   
-  bool actual_send(uint16_t address, message_t* packet) {
+  bool actual_send(uint16_t address, message_t* packett) {
+    packet = *packett
     radio_route_msg_t* msg = (radio_route_msg_t*)packet;
       dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       /*
