@@ -161,12 +161,10 @@ implementation {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
           } else if (msg->type == ROUTE_REQ) {
-              address = AM_BROADCAST_ADDR;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->value = msg->value + 1;
-              address = rt_next_hop[msg->dest-1];
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
         }
