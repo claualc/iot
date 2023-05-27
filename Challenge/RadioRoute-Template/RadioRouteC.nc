@@ -279,7 +279,7 @@ implementation {
             msg->type = waiting_data_packet->type;
             msg->value = waiting_data_packet->value;
 
-            generate_send(msg->dest, msg, DATA);
+            generate_send(msg->dest, bufPtr, DATA);
 
             waiting_data_packet->dest=NULL;
           } else {
