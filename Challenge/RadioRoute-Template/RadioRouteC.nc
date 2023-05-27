@@ -190,6 +190,7 @@ implementation {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
 
+      dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
       
       /*
       divive the receive functionality by the msg type
@@ -197,7 +198,6 @@ implementation {
       if (msg->type == DATA) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         // add led function
-        dbg("radio_rec", "\t\t TYPE DATA");
         generate_send(msg->dest, msg, DATA);
 
 
