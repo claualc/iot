@@ -143,6 +143,9 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
+      if (call AMSend.send(AM_BROADCAST_ADDR, msg, sizeof(radio_route_msg_t)) == SUCCESS) {
+        dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+      }
       actual_send(msg->dest, msg);
     }
   }
