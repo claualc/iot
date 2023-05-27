@@ -271,7 +271,7 @@ implementation {
           if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest] != NULL) {
             // routa encontrada
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
-            dbg("radio_pack","\t\t\tSending data packet... %d hops from %d to %u\n",rt_hot_count[msg->dest-1], TOS_NODE_ID, msg->dest);
+            dbg("radio_pack","\t\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
             msg->src = waiting_data_packet->src;
             msg->dest = waiting_data_packet->dest;
             msg->type = waiting_data_packet->type;
