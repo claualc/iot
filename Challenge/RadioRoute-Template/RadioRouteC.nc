@@ -192,7 +192,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-      radio_route_msg_t* waiting_data_packet = waiting_packet;
+      radio_route_msg_t* waiting_data_packet = uwaiting_packet;
 
       /*
       divive the receive functionality by the msg type
