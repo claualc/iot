@@ -148,7 +148,7 @@ implementation {
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
-    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+    radio_route_msg_t* new_msg = (radio_route_msg_t*)packet;
 
       /*
         if destination address not in actual routing_table
@@ -157,10 +157,10 @@ implementation {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packet;
 
-        msg->src = TOS_NODE_ID;
-        msg->type = ROUTE_REQ;
+        new_msg->src = TOS_NODE_ID;
+        new_msg->type = ROUTE_REQ;
         address = AM_BROADCAST_ADDR;
-        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",new_msg->src,new_msg->dest,new_msg->type);
       } else {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
