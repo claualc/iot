@@ -193,7 +193,8 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
       radio_route_msg_t* waiting_data_packet = (radio_route_msg_t*)call Packet.getPayload(&waiting_packet, sizeof(radio_route_msg_t));
-
+      uint16_t temp_src;
+      
       /*
       divive the receive functionality by the msg type
       */
@@ -202,7 +203,7 @@ implementation {
         // add led function
         generate_send(rt_next_hop[msg->dest-1], bufPtr, DATA);
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
-        uint16_t temp_src;
+        
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
         //ignore backwards broadcast form next node
