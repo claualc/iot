@@ -84,25 +84,23 @@ implementation {
   * MANDATORY: DO NOT MODIFY THIS FUNCTION
   */
   	if (call Timer0.isRunning()){
-      dbg("radio_rec", "Timer0.isRunning()");
+      //dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
   	}else{
   	if (type == ROUTE_REQ && !route_req_sent ){
-      dbg("radio_rec", "type == 1 && !route_req_sent\n");
+      //dbg("radio_rec", "type == 1 && !route_req_sent\n");
   		route_req_sent = TRUE;
-      dbg("radio_rec", "TOS_NODE_ID-1 %d\n",TOS_NODE_ID-1);
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
-      dbg("radio_rec", "Taaaaaaaa %d\n",TOS_NODE_ID-1);
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == ROUTE_REP && !route_rep_sent){
-      dbg("radio_rec", "type == 2 && !route_rep_sent\n");
+      //dbg("radio_rec", "type == 2 && !route_rep_sent\n");
   	  route_rep_sent = TRUE;
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == 0){
-      dbg("radio_rec", "type == 0\n");
+      //dbg("radio_rec", "type == 0\n");
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
   		queued_packet = *packet;
   		queue_addr = address;	
@@ -129,8 +127,6 @@ implementation {
   }
   
   event void Timer0.fired() {
-    dbg("radio_rec", "dispara o timer\n");
-
   	/*
   	* Timer triggered to perform the send.
   	* MANDATORY: DO NOT MODIFY THIS FUNCTION
@@ -157,7 +153,6 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      dbg("radio_rec", "ID QUE ESTA ACESSANDO %u max legnth %hhx",msg->dest,sizeof(rt_next_hop));
       if (rt_next_hop[msg->dest-1] == NULL) {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packett;
