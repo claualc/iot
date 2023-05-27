@@ -248,8 +248,8 @@ implementation {
 
         } 
       }  else if (msg->type == ROUTE_REP) {
-          dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
           uint16_t actual_count;
+          dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
           /*
             Save data on table if empty or acrual count biguer
