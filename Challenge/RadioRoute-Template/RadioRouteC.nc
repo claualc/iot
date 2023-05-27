@@ -278,7 +278,7 @@ implementation {
 
             generate_send(msg->dest, msg, DATA);
 
-            msg->dest=NULL;
+            waiting_data_packet->dest=NULL;
           } else {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
