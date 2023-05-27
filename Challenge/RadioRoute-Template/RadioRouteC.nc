@@ -280,7 +280,7 @@ implementation {
             generate_send(msg->dest, bufPtr, DATA);
             waiting_data_packet->dest=NULL;
 
-            dbg("NODE %d",TOS_NODE_ID)
+            dbg("NODE %d",TOS_NODE_ID);
             dbg("+------+----------+-----------+\n");
             dbg("| dest | next_hop | hop_count |\n");
             dbg("+------+----------+-----------+\n");
