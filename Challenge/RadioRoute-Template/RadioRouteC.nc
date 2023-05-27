@@ -143,12 +143,12 @@ implementation {
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
-      actual_send(msg->dest, packet);
+      actual_send(msg->dest, &packet);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
-    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
+    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
       dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       /*
         if destination address not in actual routing_table
