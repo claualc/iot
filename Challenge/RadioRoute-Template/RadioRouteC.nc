@@ -149,7 +149,7 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      if ( msg->dest != AM_BROADCAST_ADDR && rt_next_hop[msg->dest-1] == NULL) {
+      if ( address != AM_BROADCAST_ADDR && rt_next_hop[msg->dest-1] == NULL) {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packett;
 
