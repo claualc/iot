@@ -142,40 +142,37 @@ implementation {
       msg->src = 5;
       msg->dest = 7;
 
-      //dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
-      //if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      //  dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, AM_BROADCAST_ADDR);	
-      //}
+    
       actual_send(msg->dest, &packet);
     }
   }
   
   bool actual_send(uint16_t address, message_t* packett) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(packett, sizeof(radio_route_msg_t));;
-      dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
 
       /*
         if destination address not in actual routing_table
       */
-        if (rt_next_hop[msg->dest-1] == NULL) {
-          // hold on DATA packet and do a route discovery
-          waiting_packet = *packett;
+      if (rt_next_hop[msg->dest-1] == NULL) {
+        // hold on DATA packet and do a route discovery
+        waiting_packet = *packett;
 
-          msg->src = 3;
-          msg->type = ROUTE_REQ;
-          address = AM_BROADCAST_ADDR;
-          dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
-        } else {
-            if (msg->type == DATA) {
-                address = rt_next_hop[msg->dest-1];
-            } else if (msg->type == ROUTE_REQ) {
-                address = AM_BROADCAST_ADDR;
-            } else if (msg->type == ROUTE_REP){
-                // add +1 in hopcount before sending
-                msg->value = msg->value + 1;
-                address = rt_next_hop[msg->dest-1];
-            } 
+        msg->src = 3;
+        msg->type = ROUTE_REQ;
+        address = AM_BROADCAST_ADDR;
+        dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+      } else {
+          if (msg->type == DATA) {
+              address = rt_next_hop[msg->dest-1];
+          } else if (msg->type == ROUTE_REQ) {
+              address = AM_BROADCAST_ADDR;
+          } else if (msg->type == ROUTE_REP){
+              // add +1 in hopcount before sending
+              msg->value = msg->value + 1;
+              address = rt_next_hop[msg->dest-1];
+          } 
         }
+
     if (call AMSend.send(address, packett, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
