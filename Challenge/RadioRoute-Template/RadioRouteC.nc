@@ -146,7 +146,7 @@ implementation {
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
         dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, AM_BROADCAST_ADDR);	
       }
-      actual_send(msg->dest, msg);
+      actual_send(msg->dest, &msg);
     }
   }
   
