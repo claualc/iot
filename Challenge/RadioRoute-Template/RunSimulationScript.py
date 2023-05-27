@@ -60,8 +60,8 @@ print "******* CREATING NODES"
 for i in range(1, 8):
     print ">>>Node:",i;
     node =t.getNode(i);
-    time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
-    node.bootAtTime(time);
+    timee = 0*t.ticksPerSecond(); #instant at which each node should be turned on
+    node.bootAtTime(timee);
 print "\n\n\n"
 
 print "******* CREATING LINKS (radio channels)"
@@ -94,7 +94,6 @@ for line in lines:
             sys.stdout.write ("#")
             sys.stdout.flush()
         for i in range(1, 8):
-            print "Noise of node",i;
             t.getNode(i).addNoiseTraceReading(val)
 print "Done!";
 
