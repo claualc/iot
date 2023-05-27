@@ -90,7 +90,9 @@ implementation {
   	if (type == ROUTE_REQ && !route_req_sent ){
       dbg("radio_rec", "type == 1 && !route_req_sent\n");
   		route_req_sent = TRUE;
+      dbg("radio_rec", "TOS_NODE_ID-1 %d\n",TOS_NODE_ID-1);
   		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
+      dbg("radio_rec", "Taaaaaaaa %d\n",TOS_NODE_ID-1);
   		queued_packet = *packet;
   		queue_addr = address;
   	}else if (type == ROUTE_REP && !route_rep_sent){
@@ -106,8 +108,6 @@ implementation {
   		queue_addr = address;	
   	}
   	}
-    dbg("radio_rec", "acaba o generate\n");
-
   	return TRUE;
   }
 
