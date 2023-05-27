@@ -259,7 +259,7 @@ implementation {
 
         } 
       }  else if (msg->type == ROUTE_REP) {
-          radio_route_msg_t* wp = waiting_packet;
+          radio_route_msg_t* wp = &waiting_packet;
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
           
