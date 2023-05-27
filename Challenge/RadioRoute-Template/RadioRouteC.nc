@@ -169,7 +169,7 @@ implementation {
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
-              msg->src = TOS_NODE_ID;
+              //msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
@@ -234,6 +234,7 @@ implementation {
             // create ROUTE_REP with actual routing table info
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
+            msg->src = msg->dest;
             msg->dest = NULL; //?????
 
             if (!route_rep_sent) {
@@ -271,7 +272,7 @@ implementation {
           if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest] != NULL) {
             // routa encontrada
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
-            dbg("radio_pack","\t\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
+            dbg("radio_pack","\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
             msg->src = waiting_data_packet->src;
             msg->dest = waiting_data_packet->dest;
             msg->type = waiting_data_packet->type;
@@ -303,6 +304,7 @@ implementation {
           } else {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
+            msg->src = msg->dest;
             msg->dest = NULL; //?????
             generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
