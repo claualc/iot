@@ -102,12 +102,9 @@ implementation {
         queue_addr = address;	
       }
       }
+    dbg("radio_rec", "\t\tgenerated function at node %d route_req_sent %d route_rep_sent %d\n", TOS_NODE_ID, route_req_sent, route_rep_sent);
       return TRUE;
     }
-
-    dbg("radio_rec", "\t\tgenerated function at node %d route_req_sent %d route_rep_sent %d\n", TOS_NODE_ID, route_req_sent, route_rep_sent);
-  	return TRUE;
-  }
 
  /****** EVENTS *****/
   event void Boot.booted() {
