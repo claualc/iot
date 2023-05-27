@@ -259,6 +259,7 @@ implementation {
 
         } 
       }  else if (msg->type == ROUTE_REP) {
+          radio_route_msg_t* wp = waiting_packet;
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
           
@@ -277,10 +278,10 @@ implementation {
           }
 
           // check if this is the original src node of the ROUTE_REQ
-          if (waiting_packet->dest == msg->dest) {
+          if (wp->dest == msg->dest) {
             // if is the same, send the packet waiting the route discovery
             clear_queue(ROUTE_REQ); // request done
-            generate_send(waiting_packet->dest,waiting_packet,waiting_packet->TYPE);
+            generate_send(wp->dest,bufPtr,wp->TYPE);
           } else {
             /* this is the original node who 
               requested the route discovery.
