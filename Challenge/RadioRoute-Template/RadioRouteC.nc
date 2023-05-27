@@ -162,18 +162,18 @@ implementation {
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",new_msg->src,new_msg->dest,new_msg->type);
       } else {
-          if (msg->type == DATA) {
-              address = rt_next_hop[msg->dest-1];
-          } else if (msg->type == ROUTE_REQ) {
+          if (new_msg->type == DATA) {
+              address = rt_next_hop[new_msg->dest-1];
+          } else if (new_msg->type == ROUTE_REQ) {
               address = AM_BROADCAST_ADDR;
-          } else if (msg->type == ROUTE_REP){
+          } else if (new_msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
-              msg->value = msg->value + 1;
-              address = rt_next_hop[msg->dest-1];
+              new_msg->value = new_msg->value + 1;
+              address = rt_next_hop[new_msg->dest-1];
           } 
       }
 
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+    if (call AMSend.send(address, &new_msg, sizeof(radio_route_msg_t)) == SUCCESS) {
       //dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
