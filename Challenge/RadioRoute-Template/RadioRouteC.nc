@@ -200,6 +200,7 @@ implementation {
 
 
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
+        dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
         /*
           BACKWARDS NODE_ID LEARNING
@@ -211,7 +212,6 @@ implementation {
             dbg("radio_rec", "..::UPDATE TABLE at %d -> final dest %u next_hop %u count %u\n",TOS_NODE_ID,msg->src, msg->src,1);
         }
 
-        dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         //ignore backwards broadcast form next node
 
         if (msg->dest == TOS_NODE_ID) {
@@ -225,7 +225,7 @@ implementation {
           msg->value = 0;
           generate_send(msg->dest,bufPtr,ROUTE_REP);
           dbg("radio_rec", "\t\tROUTE_REQ arrived to destination node %d\n", TOS_NODE_ID);
-          dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
+          dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d\n",msg->src,msg->dest, TOS_NODE_ID);
         } else {
           uint16_t temp_src;
           /*
@@ -266,16 +266,16 @@ implementation {
           /*
             Save data on table if empty or actual count biguer
           */
-          actual_count = rt_hot_count[msg->dest-1];
-          if (actual_count==NULL || actual_count>msg->value) {
-            // update route in current table
-            rt_hot_count[msg->dest-1] = msg->value;
-            rt_next_hop[msg->dest-1] = msg->src;
+          // // actual_count = rt_hot_count[msg->dest-1];
+          // // if (actual_count==NULL || actual_count>msg->value) {
+          // //   // update route in current table
+          // //   rt_hot_count[msg->dest-1] = msg->value;
+          // //   rt_next_hop[msg->dest-1] = msg->src;
 
-            dbg("radio_pack","\t\tTable update at node %d -> dest: %u next_hop: %u count: %u\n"
-                      ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
-            clear_queue(ROUTE_REQ);
-          }
+          // //   dbg("radio_pack","\t\tTable update at node %d -> dest: %u next_hop: %u count: %u\n"
+          // //             ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
+          // //   clear_queue(ROUTE_REQ);
+          // // }
 
           // check if this is the original src node of the ROUTE_REQ
           if (wp->dest == msg->dest) {
