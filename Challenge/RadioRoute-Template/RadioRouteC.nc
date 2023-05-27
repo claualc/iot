@@ -155,7 +155,7 @@ implementation {
           // hold on DATA packet and do a route discovery
           dbg("radio_rec", "\t\t Packet queue in the waiting list at %d type %u\n",TOS_NODE_ID,msg->type);
 
-          waiting_packet = *packett;
+          waiting_packet = msg;
         }
 
         msg->src = TOS_NODE_ID;
