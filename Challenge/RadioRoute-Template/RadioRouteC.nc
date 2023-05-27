@@ -150,8 +150,11 @@ implementation {
         if destination address not in actual routing_table
       */
       if ( address != AM_BROADCAST_ADDR && rt_next_hop[msg->dest-1] == NULL) {
-        // hold on DATA packet and do a route discovery
-        waiting_packet = *packett;
+
+        if (msg->type == DATA) {
+          // hold on DATA packet and do a route discovery
+          waiting_packet = *packett;
+        }
 
         msg->src = TOS_NODE_ID;
         msg->type = ROUTE_REQ;
@@ -187,7 +190,7 @@ implementation {
     if (len != sizeof(radio_route_msg_t)) {return bufPtr;}
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
-
+      radio_route_msg_t* waiting_data_packet = &waiting_packet;
 
       /*
       divive the receive functionality by the msg type
@@ -251,7 +254,7 @@ implementation {
       }  else if (msg->type == ROUTE_REP) {
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
-          
+
           /*
             Save data on table if empty or actual count biguer
           */
@@ -264,21 +267,22 @@ implementation {
             dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,msg->value );
           }
 
-          msg->type = ROUTE_REP;
-          msg->value = rt_hot_count[msg->dest-1];
-          msg->dest = NULL; //?????
-          generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
-          // // check if this is the original src node of the ROUTE_REQ
-          // if (wp->dest == msg->dest) {
-          //   // if is the same, send the packet waiting the route discovery
-          //   generate_send(wp->dest,bufPtr,wp->type);
-          // } else {
-          //   /* this is the original node who 
-          //     requested the route discovery.
-          //     Send its data packet
-          //   */
-          //   generate_send(msg->dest,bufPtr,msg->type);
-          // }
+            /*VERIFY WAITING ACKET FOR ROUTE DISCOVERY TO END*/
+          if (rt_next_hop[waiting_data_packet->dest] != NULL) {
+            // routa encontrada
+            dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
+            msg->src = waiting_data_packet->src;
+            msg->dest = waiting_data_packet->dest;
+            msg->type = waiting_data_packet->type;
+            msg->value = waiting_data_packet->value;
+            generate_send(msg->dest, msg, DATA);
+          } else {
+            msg->type = ROUTE_REP;
+            msg->value = rt_hot_count[msg->dest-1];
+            msg->dest = NULL; //?????
+            generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
+          }
+         
       }
       return bufPtr;
     }
