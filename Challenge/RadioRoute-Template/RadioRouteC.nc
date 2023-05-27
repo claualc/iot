@@ -157,25 +157,25 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      // if (rt_next_hop[msg->dest-1] == NULL) {
-      //   // hold on DATA packet and do a route discovery
-      //   waiting_packet = *packett;
+        if (rt_next_hop[msg->dest-1] == NULL) {
+          // hold on DATA packet and do a route discovery
+          waiting_packet = *packett;
 
-      //   msg->src = 3;
-      //   msg->type = ROUTE_REQ;
-      //   address = AM_BROADCAST_ADDR;
-      //   dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
-      // } else {
-      //     if (msg->type == DATA) {
-      //         address = rt_next_hop[msg->dest-1];
-      //     } else if (msg->type == ROUTE_REQ) {
-      //         address = AM_BROADCAST_ADDR;
-      //     } else if (msg->type == ROUTE_REP){
-      //         // add +1 in hopcount before sending
-      //         msg->value = msg->value + 1;
-      //         address = rt_next_hop[msg->dest-1];
-      //     } 
-      // }
+          msg->src = 3;
+          msg->type = ROUTE_REQ;
+          address = AM_BROADCAST_ADDR;
+          dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+        } else {
+            if (msg->type == DATA) {
+                address = rt_next_hop[msg->dest-1];
+            } else if (msg->type == ROUTE_REQ) {
+                address = AM_BROADCAST_ADDR;
+            } else if (msg->type == ROUTE_REP){
+                // add +1 in hopcount before sending
+                msg->value = msg->value + 1;
+                address = rt_next_hop[msg->dest-1];
+            } 
+        }
       address = AM_BROADCAST_ADDR;
     if (call AMSend.send(address, packett, sizeof(radio_route_msg_t)) == SUCCESS) {
       dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
