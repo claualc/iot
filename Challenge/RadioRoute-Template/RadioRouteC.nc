@@ -281,7 +281,7 @@ implementation {
           if (wp->dest == msg->dest) {
             // if is the same, send the packet waiting the route discovery
             clear_queue(ROUTE_REQ); // request done
-            generate_send(wp->dest,bufPtr,wp->TYPE);
+            generate_send(wp->dest,bufPtr,wp->type);
           } else {
             /* this is the original node who 
               requested the route discovery.
