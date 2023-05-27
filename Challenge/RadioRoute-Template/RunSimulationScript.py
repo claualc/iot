@@ -57,7 +57,7 @@ t.addChannel("radio_rec",out);
 print "\n\n\n"
 
 print "******* CREATING NODES"
-for i in range(1, 8):
+for i in range(0, 7):
     print ">>>Node:",i;
     node =t.getNode(i);
     time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
@@ -93,11 +93,11 @@ for line in lines:
             mid_compl = 0;
             sys.stdout.write ("#")
             sys.stdout.flush()
-        for i in range(1, 8):
+        for i in range(0, 7):
             t.getNode(i).addNoiseTraceReading(val)
 print "Done!";
 
-for i in range(1, 8):
+for i in range(0, 7):
     print ">>>Creating noise model for node:",i;
     t.getNode(i).createNoiseModel()
 
