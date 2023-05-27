@@ -279,6 +279,27 @@ implementation {
 
             generate_send(msg->dest, bufPtr, DATA);
             waiting_data_packet->dest=NULL;
+
+            dbg("NODE %d",TOS_NODE_ID)
+            dbg("+------+----------+-----------+\n");
+            dbg("| dest | next_hop | hop_count |\n");
+            dbg("+------+----------+-----------+\n");
+            dbg("|  1   |   %u     |    %u     |\n", rt_next_hop[0],rt_hot_count[0]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  2   |   %u     |    %u     |\n", rt_next_hop[1],rt_hot_count[1]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  3   |   %u     |    %u     |\n", rt_next_hop[2],rt_hot_count[2]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  4   |   %u     |    %u     |\n", rt_next_hop[3],rt_hot_count[3]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  5   |   %u     |    %u     |\n", rt_next_hop[4],rt_hot_count[4]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  6   |   %u     |    %u     |\n", rt_next_hop[5],rt_hot_count[5]);
+            dbg("+------+----------+-----------+\n");
+            dbg("|  7   |   %u     |    %u     |\n", rt_next_hop[6],rt_hot_count[6]);
+            dbg("+------+----------+-----------+\n\n");
+
+           
           } else {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
