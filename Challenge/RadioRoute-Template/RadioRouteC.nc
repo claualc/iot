@@ -282,9 +282,8 @@ implementation {
           // //   */
           // //   generate_send(msg->dest,bufPtr,msg->type);
           // // }
-          
-          return bufPtr;
       }
+      return bufPtr;
     }
   }
 }
