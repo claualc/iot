@@ -84,28 +84,26 @@ implementation {
   * MANDATORY: DO NOT MODIFY THIS FUNCTION
   */
   	if (call Timer0.isRunning()){
-      //dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
   	}else{
-  	if (type == ROUTE_REQ && !route_req_sent ){
-      //dbg("radio_rec", "type == 1 && !route_req_sent\n");
-  		route_req_sent = TRUE;
-  		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
-  		queued_packet = *packet;
-  		queue_addr = address;
-  	}else if (type == ROUTE_REP && !route_rep_sent){
-      //dbg("radio_rec", "type == 2 && !route_rep_sent\n");
-  	  route_rep_sent = TRUE;
-  		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
-  		queued_packet = *packet;
-  		queue_addr = address;
-  	}else if (type == 0){
-      //dbg("radio_rec", "type == 0\n");
-  		call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
-  		queued_packet = *packet;
-  		queue_addr = address;	
-  	}
-  	}
+      if (type == 1 && !route_req_sent ){
+        route_req_sent = TRUE;
+        call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
+        queued_packet = *packet;
+        queue_addr = address;
+      }else if (type == 2 && !route_rep_sent){
+          route_rep_sent = TRUE;
+        call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
+        queued_packet = *packet;
+        queue_addr = address;
+      }else if (type == 0){
+        call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
+        queued_packet = *packet;
+        queue_addr = address;	
+      }
+      }
+      return TRUE;
+    }
 
     dbg("radio_rec", "\t\tgenerated function at node %d route_req_sent %d route_rep_sent %d\n", TOS_NODE_ID, route_req_sent, route_rep_sent);
   	return TRUE;
