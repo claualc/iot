@@ -162,10 +162,12 @@ implementation {
               address = rt_next_hop[msg->dest-1];
           } else if (msg->type == ROUTE_REQ) {
               address = AM_BROADCAST_ADDR;
+              dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->value = msg->value + 1;
               address = rt_next_hop[msg->dest-1];
+              dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
         }
 
@@ -210,18 +212,16 @@ implementation {
           Generate ROUTE_REPLY
           */
           msg->type = ROUTE_REP;
-          msg->dest = msg->src;
+          msg->dest = AM_BROADCAST_ADDR;
           msg->src = TOS_NODE_ID;
           msg->value = 0;
 
           if (!route_rep_sent) {
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-            dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d (broadcast)\n",msg->src,msg->dest, TOS_NODE_ID);
-            generate_send(AM_BROADCAST_ADDR,bufPtr,msg->type);
+            generate_send(msg->dest,bufPtr,msg->type);
           }
 
         } else {
-          uint16_t temp_src;
           /*
            this is not the node the ROUTE_REQ was looking for
            check if the destination node is in the current table
@@ -236,13 +236,11 @@ implementation {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
             // src becomes the dest and the dest the src
-            temp_src=msg->src;
-            msg->src = msg->dest;
-            msg->dest = temp_src;
+            msg->src = TOS_NODE_ID;
+            msg->dest = AM_BROADCAST_ADDR;
 
             if (!route_rep_sent) {
               dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-              dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d (broadcast)\n",msg->src,msg->dest, TOS_NODE_ID);
               generate_send(AM_BROADCAST_ADDR,bufPtr,msg->type);
             }
            
