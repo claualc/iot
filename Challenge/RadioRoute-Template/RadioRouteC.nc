@@ -136,11 +136,11 @@ implementation {
 
   event void Timer1.fired() {
 
-    if (TOS_NODE_ID == 1) {
+    if (TOS_NODE_ID == 0) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-      msg->type = ROUTE_REQ;
-      msg->src = 1;
-      msg->dest = 7;
+      msg->type = DATA;
+      msg->src = 0;
+      msg->dest = 6;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
       actual_send(msg->dest, &packet);
@@ -153,7 +153,7 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      if (rt_next_hop[msg->dest-1] == NULL) {
+      if (rt_next_hop[msg->dest] == NULL) {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packet;
 
@@ -163,13 +163,13 @@ implementation {
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
       } else {
           if (msg->type == DATA) {
-              address = rt_next_hop[msg->dest-1];
+              address = rt_next_hop[msg->dest];
           } else if (msg->type == ROUTE_REQ) {
               address = AM_BROADCAST_ADDR;
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->value = msg->value + 1;
-              address = rt_next_hop[msg->dest-1];
+              address = rt_next_hop[msg->dest];
           } 
       }
 
