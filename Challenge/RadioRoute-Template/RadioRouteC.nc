@@ -205,9 +205,9 @@ implementation {
           BACKWARDS NODE_ID LEARNING
           Update routing table neirghbours
         */
-        if (rt_next_hop[msg->src] == NULL) {
-            rt_next_hop[msg->src] = msg->src;
-            rt_hot_count[msg->src] = 1;
+        if (rt_next_hop[msg->src-1] == NULL) {
+            rt_next_hop[msg->src-1] = msg->src;
+            rt_hot_count[msg->src-1] = 1;
             dbg("radio_rec", "..::UPDATE TABLE at %d -> next_hop %u count %u\n",TOS_NODE_ID, msg->src,1);
         }
 
