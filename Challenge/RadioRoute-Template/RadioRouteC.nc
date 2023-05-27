@@ -138,7 +138,7 @@ implementation {
 
     if (TOS_NODE_ID == 1) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
-      msg->type = DATA;
+      msg->type = ROUTE_REQ;
       msg->src = 1;
       msg->dest = 7;
 
