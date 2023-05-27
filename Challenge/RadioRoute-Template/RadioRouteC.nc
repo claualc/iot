@@ -268,7 +268,6 @@ implementation {
           msg->value = rt_hot_count[msg->dest-1];
           msg->dest = NULL; //?????
           generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
-
           // // check if this is the original src node of the ROUTE_REQ
           // if (wp->dest == msg->dest) {
           //   // if is the same, send the packet waiting the route discovery
