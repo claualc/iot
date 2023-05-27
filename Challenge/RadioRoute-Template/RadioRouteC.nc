@@ -164,6 +164,7 @@ implementation {
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
+              msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
@@ -210,13 +211,12 @@ implementation {
           Generate ROUTE_REPLY
           */
           msg->type = ROUTE_REP;
-          msg->dest = AM_BROADCAST_ADDR;
-          msg->src = TOS_NODE_ID;
+          msg->dest = NULL; // ????
           msg->value = 0;
 
           if (!route_rep_sent) {
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-            generate_send(msg->dest,bufPtr,msg->type);
+            generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
 
         } else {
@@ -233,13 +233,11 @@ implementation {
             // create ROUTE_REP with actual routing table info
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
-            // src becomes the dest and the dest the src
-            msg->src = TOS_NODE_ID;
-            msg->dest = AM_BROADCAST_ADDR;
+            msg->dest = NULL; //?????
 
             if (!route_rep_sent) {
               dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-              generate_send( msg->dest,bufPtr,msg->type);
+              generate_send( AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
             }
            
           } else {
@@ -253,36 +251,37 @@ implementation {
 
         } 
       }  else if (msg->type == ROUTE_REP) {
-          radio_route_msg_t* wp = &waiting_packet;
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
           
           /*
             Save data on table if empty or actual count biguer
           */
-          // // actual_count = rt_hot_count[msg->dest-1];
-          // // if (actual_count==NULL || actual_count>msg->value) {
-          // //   // update route in current table
-          // //   rt_hot_count[msg->dest-1] = msg->value;
-          // //   rt_next_hop[msg->dest-1] = msg->src;
+          actual_count = rt_hot_count[msg->src-1];
+          if (actual_count==NULL || actual_count>msg->value) {
+            // update route in current table
+            rt_hot_count[msg->src-1] = msg->value;
+            rt_next_hop[msg->src-1] = msg->src;
 
-          // //   dbg("radio_pack","\t\tTable update at node %d -> dest: %u next_hop: %u count: %u\n"
-          // //             ,TOS_NODE_ID, msg->dest,msg->src,msg->value );
-          // //   clear_queue(ROUTE_REQ);
-          // // }
-
-          // check if this is the original src node of the ROUTE_REQ
-          if (wp->dest == msg->dest) {
-            // if is the same, send the packet waiting the route discovery
-            clear_queue(ROUTE_REQ); // request done
-            generate_send(wp->dest,bufPtr,wp->type);
-          } else {
-            /* this is the original node who 
-              requested the route discovery.
-              Send its data packet
-            */
-            generate_send(msg->dest,bufPtr,msg->type);
+            dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->value );
           }
+
+          msg->type = ROUTE_REP;
+          msg->value = rt_hot_count[msg->dest-1];
+          msg->dest = NULL; //?????
+          generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
+
+          // // check if this is the original src node of the ROUTE_REQ
+          // if (wp->dest == msg->dest) {
+          //   // if is the same, send the packet waiting the route discovery
+          //   generate_send(wp->dest,bufPtr,wp->type);
+          // } else {
+          //   /* this is the original node who 
+          //     requested the route discovery.
+          //     Send its data packet
+          //   */
+          //   generate_send(msg->dest,bufPtr,msg->type);
+          // }
       }
       return bufPtr;
     }
