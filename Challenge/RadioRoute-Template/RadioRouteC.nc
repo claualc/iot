@@ -148,7 +148,7 @@ implementation {
   }
   
   bool actual_send(uint16_t address, message_t* packet) {
-    radio_route_msg_t* msg = (radio_route_msg_t*)packet;
+    radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
 
       /*
         if destination address not in actual routing_table
@@ -173,8 +173,8 @@ implementation {
           } 
       }
 
-    if (call AMSend.send(address, packet, sizeof(radio_route_msg_t)) == SUCCESS) {
-      //dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+    if (call AMSend.send(address, &packet, sizeof(radio_route_msg_t)) == SUCCESS) {
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
 
