@@ -268,6 +268,7 @@ implementation {
           }
 
             /*VERIFY WAITING ACKET FOR ROUTE DISCOVERY TO END*/
+            dbg("radio_pack","waiting packe dest %u src %u type %u\n",TOS_NODE_ID, waiting_data_packet->dest,waiting_data_packet->src,waiting_data_packet->type );
           if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest] != NULL) {
             // routa encontrada
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
