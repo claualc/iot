@@ -200,9 +200,7 @@ implementation {
       if (msg->type == DATA) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         // add led function
-        generate_send(msg->dest, msg, DATA);
-
-
+        generate_send(rt_next_hop[msg->dest-1], msg, DATA);
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
@@ -272,15 +270,14 @@ implementation {
             /*VERIFY WAITING ACKET FOR ROUTE DISCOVERY TO END*/
           if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest] != NULL) {
             // routa encontrada
-            dbg("radio_pack","waiting packe dest %u src %u type %u\n", waiting_data_packet->dest,waiting_data_packet->src,waiting_data_packet->type );
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
+            dbg("radio_pack","\t\t\tSending data packet... %d hops from %d to %u\n",rt_hot_count[msg->dest-1], TOS_NODE_ID, msg->dest);
             msg->src = waiting_data_packet->src;
             msg->dest = waiting_data_packet->dest;
             msg->type = waiting_data_packet->type;
             msg->value = waiting_data_packet->value;
 
             generate_send(msg->dest, bufPtr, DATA);
-
             waiting_data_packet->dest=NULL;
           } else {
             msg->type = ROUTE_REP;
@@ -288,7 +285,6 @@ implementation {
             msg->dest = NULL; //?????
             generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
-         
       }
       return bufPtr;
     }
