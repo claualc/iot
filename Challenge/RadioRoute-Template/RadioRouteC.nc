@@ -139,7 +139,7 @@ implementation {
     if (TOS_NODE_ID == 1) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = DATA;
-      msg->src = 1;
+      msg->src = 5;
       msg->dest = 7;
 
       dbg("boot","..::Timer1.fired -> SENDING FIRST PACKET to %u\n\n", msg->dest);
@@ -158,7 +158,7 @@ implementation {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packet;
 
-        msg->src = TOS_NODE_ID;
+        msg->src = 3;
         msg->type = ROUTE_REQ;
         address = AM_BROADCAST_ADDR;
         dbg("radio_rec", "\t\tPRESEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
