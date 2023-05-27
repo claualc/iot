@@ -202,16 +202,6 @@ implementation {
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
-        /*
-          BACKWARDS NODE_ID LEARNING
-          Update routing table neirghbours
-        */
-        if (rt_next_hop[msg->src-1] == NULL) {
-            rt_next_hop[msg->src-1] = msg->src;
-            rt_hot_count[msg->src-1] = 1;
-            dbg("radio_rec", "\t\tUPDATE TABLE at %d -> final dest %u next_hop %u count %u\n",TOS_NODE_ID,msg->src, msg->src,1);
-        }
-
         //ignore backwards broadcast form next node
 
         if (msg->dest == TOS_NODE_ID) {
