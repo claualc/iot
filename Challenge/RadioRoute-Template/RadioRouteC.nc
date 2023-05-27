@@ -149,7 +149,7 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      if (rt_next_hop[msg->dest-1] == NULL) {
+      if ( msg->dest != AM_BROADCAST_ADDR && rt_next_hop[msg->dest-1] == NULL) {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packett;
 
@@ -241,7 +241,7 @@ implementation {
 
             if (!route_rep_sent) {
               dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
-              generate_send(AM_BROADCAST_ADDR,bufPtr,msg->type);
+              generate_send( msg->dest,bufPtr,msg->type);
             }
            
           } else {
