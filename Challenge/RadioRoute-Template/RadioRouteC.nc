@@ -153,7 +153,7 @@ implementation {
       /*
         if destination address not in actual routing_table
       */
-      dbg("ID QUE ESTA ACESSANDO %u max legnth %hhx",msg->dest-1,sizeof(rt_next_hop))
+      dbg("ID QUE ESTA ACESSANDO %u max legnth %hhx",msg->dest,sizeof(rt_next_hop));
       if (rt_next_hop[msg->dest-1] == NULL) {
         // hold on DATA packet and do a route discovery
         waiting_packet = *packett;
