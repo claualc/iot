@@ -35,7 +35,7 @@ implementation {
   // Variables to store the message to send
   message_t queued_packet;
   uint16_t queue_addr;
-  uint16_t time_delays[7]={61,173,267,1,479,583,689}; //Time delay in milli seconds
+  uint16_t time_delays[7]={61,173,267,371,1,583,689}; //Time delay in milli seconds
 
   message_t waiting_packet;
 
