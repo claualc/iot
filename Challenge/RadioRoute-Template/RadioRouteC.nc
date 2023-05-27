@@ -198,7 +198,8 @@ implementation {
         // add led function
         dbg("radio_rec", "\t\t TYPE DATA");
         generate_send(msg->dest, msg, DATA);
-      } else if (msg->type == ROUTE_REQ) {
+      } else if (msg->type == ROUTE_REQ && !route_req_sent) {
+        //ignore backwards broadcast form next node
 
         if (msg->dest == TOS_NODE_ID) {
           /*
