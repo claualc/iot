@@ -200,7 +200,7 @@ implementation {
       if (msg->type == DATA) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         // add led function
-        generate_send(rt_next_hop[msg->dest-1], msg, DATA);
+        generate_send(rt_next_hop[msg->dest-1], bufPtr, DATA);
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
