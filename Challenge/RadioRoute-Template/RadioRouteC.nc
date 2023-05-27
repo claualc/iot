@@ -308,8 +308,9 @@ implementation {
           } else {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
+            temp_src = msg->src;
             msg->src = msg->dest;
-            msg->dest = NULL; //?????
+            msg->dest = temp_src;
             generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
           }
       }
