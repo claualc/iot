@@ -223,9 +223,13 @@ implementation {
           msg->dest = msg->src;
           msg->src = TOS_NODE_ID;
           msg->value = 0;
-          generate_send(msg->dest,bufPtr,ROUTE_REP);
-          dbg("radio_rec", "\t\tROUTE_REQ arrived to destination node %d\n", TOS_NODE_ID);
-          dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d\n",msg->src,msg->dest, TOS_NODE_ID);
+
+          if (!route_rep_sent) {
+            dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
+            dbg("radio_rec", "\t\tREPLY_REQ from %u to %u generated at %d\n",msg->src,msg->dest, TOS_NODE_ID);
+            generate_send(msg->dest,bufPtr,msg->type);
+          }
+
         } else {
           uint16_t temp_src;
           /*
