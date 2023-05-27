@@ -156,7 +156,7 @@ implementation {
         msg->src = TOS_NODE_ID;
         msg->type = ROUTE_REQ;
         address = AM_BROADCAST_ADDR;
-        dbg("radio_rec", "..::SEND -> Route discovery generated from %u to %u type %u\n",msg->src,msg->dest,msg->type);
+        dbg("radio_rec", "..::SEND at %d -> Route discovery generated from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest,msg->type);
       } else {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
