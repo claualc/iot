@@ -83,6 +83,7 @@ implementation {
   *
   * MANDATORY: DO NOT MODIFY THIS FUNCTION
   */
+    dbg("radio_rec", "entrou no genetare\n");
   	if (call Timer0.isRunning()){
       dbg("radio_rec", "Timer0.isRunning()");
   		return FALSE;
