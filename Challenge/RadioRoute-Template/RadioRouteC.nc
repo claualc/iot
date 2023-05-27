@@ -187,6 +187,7 @@ implementation {
     else {
       radio_route_msg_t* msg = (radio_route_msg_t*)payload;
 
+
       
       /*
       divive the receive functionality by the msg type
@@ -196,7 +197,20 @@ implementation {
         // add led function
         dbg("radio_rec", "\t\t TYPE DATA");
         generate_send(msg->dest, msg, DATA);
+
+
       } else if (msg->type == ROUTE_REQ && !route_req_sent) {
+
+        /*
+          BACKWARDS NODE_ID LEARNING
+          Update routing table neirghbours
+        */
+        if (rt_next_hop[msg->src] == NULL) {
+            rt_next_hop[msg->src] = msg->src;
+            rt_hot_count[msg->src] = 1;
+            dbg("radio_rec", "..::UPDATE TABLE at %d -> next_hop %u count %u\n",TOS_NODE_ID, msg->src,1);
+        }
+
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         //ignore backwards broadcast form next node
 
@@ -247,6 +261,7 @@ implementation {
       }  else if (msg->type == ROUTE_REP) {
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
+          
 
           /*
             Save data on table if empty or acrual count biguer
