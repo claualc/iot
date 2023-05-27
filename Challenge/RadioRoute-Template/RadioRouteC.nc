@@ -141,6 +141,7 @@ implementation {
       msg->type = DATA;
       msg->src = TOS_NODE_ID;
       msg->dest = 7;
+      route_req_sent=TRUE;
     
       actual_send(msg->dest, &packet);
     }
