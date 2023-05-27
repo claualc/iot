@@ -92,7 +92,7 @@ implementation {
         queued_packet = *packet;
         queue_addr = address;
       }else if (type == 2 && !route_rep_sent){
-          route_rep_sent = TRUE;
+        route_rep_sent = TRUE;
         call Timer0.startOneShot( time_delays[TOS_NODE_ID-1] );
         queued_packet = *packet;
         queue_addr = address;
@@ -234,14 +234,14 @@ implementation {
             msg->dest = temp_src;
             dbg("radio_rec", "\t\tROUTE founded at node %d\n", TOS_NODE_ID);
             dbg("radio_rec", "\t\tREPLY_REQ generated to %u\n",msg->dest);
-            generate_send(msg->dest,bufPtr,ROUTE_REP);
+            generate_send(msg->dest,bufPtr,msg->type);
           } else {
             /* 
             ROUTE_REQ not found int table
             keep looking and queue packet
             */
             dbg("radio_rec", "\t\tROUTE_REQ to node %u not found at %d\n", msg->dest,TOS_NODE_ID);
-            generate_send(AM_BROADCAST_ADDR,bufPtr,ROUTE_REP);
+            generate_send(AM_BROADCAST_ADDR,bufPtr,msg->type);
           }
 
         } 
