@@ -275,7 +275,7 @@ implementation {
             dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,msg->value );
 
             // update route table with requested dest
-            if (msg->dest != TOS_NODE_ID) {
+            if (msg->src != route_req_dest_node) {
               rt_hot_count[msg->dest-1] = msg->value;
               rt_next_hop[msg->dest-1] = msg->dest;
 
