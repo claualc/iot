@@ -202,9 +202,9 @@ implementation {
         dbg("radio_rec", "..::SEND at %d -> Route discovery generated from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest,msg->type);
       } else {
           if (msg->type == DATA) {
-              address = rt_next_hop[msg->dest-1]-1;
+              address = rt_next_hop[msg->dest-1];
               data_sent = TRUE;
-              dbg("radio_rec", "..::SEND at %d -> DATA generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
+              dbg("radio_rec", "..::SEND at %d -> DATA generated from %u to %u, next hop %u\n",TOS_NODE_ID, msg->src,msg->dest,address);
           } else if (msg->type == ROUTE_REQ) {
               route_req_dest_node = msg->dest;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
@@ -223,7 +223,7 @@ implementation {
         }
 
     if (call AMSend.send(address, packett, sizeof(radio_route_msg_t)) == SUCCESS) {
-      //dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
     }
   }
 
