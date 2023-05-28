@@ -55,7 +55,9 @@ t.addChannel("radio_rec",out);
 print "Activate debug message on channel radio_pack"
 t.addChannel("radio_pack",out);
 
-
+# Added
+print "Activate debug message on channel led_status"
+t.addChannel("led_status",out);
 
 
 print "Creating node 1...";
@@ -100,7 +102,6 @@ time7 = 0*t.ticksPerSecond();
 node7.bootAtTime(time7);
 print ">>>Will boot at time", time7/t.ticksPerSecond(), "[sec]";
 
-
 print "Creating radio channels..."
 f = open(topofile, "r");
 lines = f.readlines()
@@ -140,7 +141,8 @@ for i in range(1, 8):
 
 print "Start simulation with TOSSIM! \n\n\n";
 
-for i in range(0,1200):
+for i in range(0,3000):
 	t.runNextEvent()
 	
 print "\n\n\nSimulation finished!";
+
