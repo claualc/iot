@@ -11,9 +11,9 @@ implementation {
   components LedsC;
   components new AMSenderC(AM_RADIO_COUNT_MSG);
   components new AMReceiverC(AM_RADIO_COUNT_MSG);
-  components new TimerMilliC();
-  components ActiveMessageC;  
-  
+  components new TimerMilliC() as Timer0;
+  components new TimerMilliC() as Timer1;
+  components ActiveMessageC;
   
   /****** INTERFACES *****/
   //Boot interface
@@ -24,10 +24,10 @@ implementation {
   App.AMSend -> AMSenderC;
   App.AMControl -> ActiveMessageC;
   App.Leds -> LedsC;
-  App.Timer0 -> TimerMilliC;
-  App.Timer1 -> TimerMilliC;
-  //App.Timer2 -> TimerMilliC;
+  App.Timer0 -> Timer0;
+  App.Timer1 -> Timer1;
   App.Packet -> AMSenderC;
+
 }
 
 

@@ -4,12 +4,24 @@
 #define RADIO_ROUTE_H
 
 typedef nx_struct radio_route_msg {
-	nx_uint8_t type;
-	nx_uint16_t sender;
-	nx_uint16_t destination;
+	/*
+	type: defines the message format
+		0 - DATA MSG
+		1 - ROUTE_REQ MSG
+		2 - ROUTE_REPLY
+	*/
+	nx_uint16_t type;
+	nx_uint16_t src;  // Sender
+	nx_uint16_t dest; // Node Requested
+	/*
+	value: defines msg payload
+	The meaning of the value attr changes 
+	with the type of the msg:
+		if DATA MSG  - led value
+		if ROUTE_REQ - none
+		if REPLY_REQ - hop_count
+	*/
 	nx_uint16_t value;
-	nx_uint16_t node_requested;
-	nx_uint16_t cost;
 } radio_route_msg_t;
 
 enum {
