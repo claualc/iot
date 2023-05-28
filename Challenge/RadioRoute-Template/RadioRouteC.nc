@@ -173,8 +173,12 @@ implementation {
               // add +1 in hopcount before sending
               msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
-              if (route_req_dest_node == 0) msg->dest = TOS_NODE_ID
-              else msg->dest = route_req_dest_node;
+              if (route_req_dest_node == 0) {
+                msg->dest = TOS_NODE_ID;
+              }
+              else {
+                msg->dest = route_req_dest_node;
+              }
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
         }
