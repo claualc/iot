@@ -284,7 +284,7 @@ implementation {
           }
 
             /*VERIFY WAITING PACKET FOR ROUTE DISCOVERY TO END*/
-          if (route_req_dest_node != 0 && rt_next_hop[route_req_dest_node-1] != NULL) {
+          if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest-1] != NULL) {
             // routa encontrada
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
             dbg("radio_pack","\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
