@@ -306,15 +306,16 @@ implementation {
             Save data on table if empty or actual count biguer
           */
           actual_count = rt_hot_count[msg->src-1];
-          if (actual_count==NULL || actual_count>msg->value) {
+          if (actual_count == NULL || actual_count > msg->value) {
             // update route in current table
             rt_hot_count[msg->src-1] = 1;
             rt_next_hop[msg->src-1] = msg->src;
 
             dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,1);
 
+            actual_count = rt_hot_count[msg->dest-1];
             // update route table with requested dest
-            if ((actual_count!=NULL && msg->src != route_req_dest_node && actual_count > msg->value) || (actual_count==NULL && msg->src != route_req_dest_node)) {
+            if ((actual_count != NULL && msg->src != route_req_dest_node && actual_count > msg->value) || (actual_count==NULL && msg->src != route_req_dest_node)) {
               rt_hot_count[msg->dest-1] = msg->value;
               rt_next_hop[msg->dest-1] = msg->dest;
 
