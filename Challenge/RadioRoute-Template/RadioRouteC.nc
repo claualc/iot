@@ -60,6 +60,7 @@ implementation {
   /*****  ROUTER VARIABLES  *****/
   bool route_req_sent=FALSE;
   bool route_rep_sent=FALSE;
+  bool data_sent=FALSE;
   
   bool locked;
   
@@ -202,6 +203,7 @@ implementation {
       } else {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
+              data_sent = TRUE;
           } else if (msg->type == ROUTE_REQ) {
               route_req_dest_node = msg->dest;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
@@ -353,7 +355,6 @@ implementation {
             msg->value = waiting_data_packet->value;
 
             generate_send(msg->dest, bufPtr, DATA);
-            route_rep_sent = TRUE;
             waiting_data_packet->dest=NULL;
             /*
             dbg("radio_pack","NODE %d\n",TOS_NODE_ID);
@@ -377,7 +378,7 @@ implementation {
             */
 
            
-          } else {
+          } if (!data_sent) {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
             msg->dest = NULL; //?????
