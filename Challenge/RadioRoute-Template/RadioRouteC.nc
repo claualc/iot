@@ -63,6 +63,7 @@ implementation {
   
   bool locked;
   
+  void change_leds();
   bool actual_send (uint16_t address, message_t* packet);
   bool generate_send (uint16_t address, message_t* packet, uint8_t type);
   bool clear_queue(int8_t type);
@@ -248,7 +249,7 @@ implementation {
       radio_route_msg_t* waiting_data_packet = (radio_route_msg_t*)call Packet.getPayload(&waiting_packet, sizeof(radio_route_msg_t));
 
       // Update LEDs
-      change_leds()
+      change_leds();
 
       /*
       divive the receive functionality by the msg type
@@ -323,11 +324,11 @@ implementation {
             dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,1);
 
             // update route table with requested dest
-            if (msg->src != route_req_dest_node && actual_count>msg->value) {
+            if (msg->src != route_req_dest_node && actual_count > msg->value) {
               rt_hot_count[msg->dest-1] = msg->value;
               rt_next_hop[msg->dest-1] = msg->dest;
 
-              dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->value );
+              dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->value);
             }
           }
 
