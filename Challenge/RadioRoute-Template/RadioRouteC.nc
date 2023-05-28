@@ -202,7 +202,7 @@ implementation {
         dbg("radio_rec", "..::SEND at %d -> Route discovery generated from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest,msg->type);
       } else {
           if (msg->type == DATA) {
-              address = rt_next_hop[msg->dest-1];
+              address = rt_next_hop[msg->dest-1]-1;
               data_sent = TRUE;
               dbg("radio_rec", "..::SEND at %d -> DATA generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REQ) {
