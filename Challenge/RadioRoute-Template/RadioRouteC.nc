@@ -300,7 +300,7 @@ implementation {
           }
 
         } 
-      }  else if (msg->type == ROUTE_REP && !route_rep_sent) {
+      }  else if (msg->type == ROUTE_REP) {
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
@@ -378,7 +378,7 @@ implementation {
             */
 
            
-          } if (!data_sent) {
+          } if (!data_sent && !route_rep_sent) {
             msg->type = ROUTE_REP;
             msg->value = rt_hot_count[msg->dest-1];
             msg->dest = NULL; //?????
