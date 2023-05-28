@@ -353,7 +353,7 @@ implementation {
             msg->value = waiting_data_packet->value;
 
             generate_send(msg->dest, bufPtr, DATA);
-            route_rep_sent = true;
+            route_rep_sent = TRUE;
             waiting_data_packet->dest=NULL;
             /*
             dbg("radio_pack","NODE %d\n",TOS_NODE_ID);
