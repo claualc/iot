@@ -180,16 +180,6 @@ implementation {
     if (led_counter >= 8) {led_counter = 0;}
   }
   
-  event void Timer0.fired() {
-  	/*
-  	* Timer triggered to perform the send.
-  	* MANDATORY: DO NOT MODIFY THIS FUNCTION
-  	*/
-  	if (queue_addr!=0) {
-	  	actual_send (queue_addr, &queued_packet);
-  	}
-  }
-  
   bool actual_send(uint16_t address, message_t* packett) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(packett, sizeof(radio_route_msg_t));;
 
