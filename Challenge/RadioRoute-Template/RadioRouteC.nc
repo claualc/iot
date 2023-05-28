@@ -167,7 +167,7 @@ implementation {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
           } else if (msg->type == ROUTE_REQ) {
-              route_req_dest_node = msg->dest
+              route_req_dest_node = msg->dest;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
@@ -259,7 +259,7 @@ implementation {
           }
 
         } 
-      }  else if (msg->type == ROUTE_REP) {
+      }  else if (msg->type == ROUTE_REP && !route_rep_sent) {
           uint16_t actual_count;
           dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
 
@@ -269,13 +269,21 @@ implementation {
           actual_count = rt_hot_count[msg->src-1];
           if (actual_count==NULL || actual_count>msg->value) {
             // update route in current table
-            rt_hot_count[msg->src-1] = msg->value;
+            rt_hot_count[msg->src-1] = 1;
             rt_next_hop[msg->src-1] = msg->src;
 
             dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,msg->value );
+
+            // update route table with requested dest
+            if (msg->dest != TOS_NODE_ID) {
+              rt_hot_count[msg->dest-1] = msg->value;
+              rt_next_hop[msg->dest-1] = msg->dest;
+
+              dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->src,msg->src,msg->value );
+            }
           }
 
-            /*VERIFY WAITING ACKET FOR ROUTE DISCOVERY TO END*/
+            /*VERIFY WAITING PACKET FOR ROUTE DISCOVERY TO END*/
           if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest] != NULL) {
             // routa encontrada
             dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
