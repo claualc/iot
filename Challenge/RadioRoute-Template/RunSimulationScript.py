@@ -32,47 +32,84 @@ t.init();
 
 #out = open(simulation_outfile, "w");
 out = sys.stdout;
-print "******* CHANNEL DEBUGING"
+
 #Add debug channel
-#print "Activate debug message on channel init"
-#t.addChannel("init",out);
+print "Activate debug message on channel init"
+t.addChannel("init",out);
 print "Activate debug message on channel boot"
 t.addChannel("boot",out);
-#print "Activate debug message on channel timer"
-#t.addChannel("timer",out);
-#print "Activate debug message on channel led_0"
-#t.addChannel("led_0",out);
-#print "Activate debug message on channel led_1"
-#t.addChannel("led_1",out);
-#print "Activate debug message on channel led_2"
-#t.addChannel("led_2",out);
+print "Activate debug message on channel timer"
+t.addChannel("timer",out);
+print "Activate debug message on channel led_0"
+t.addChannel("led_0",out);
+print "Activate debug message on channel led_1"
+t.addChannel("led_1",out);
+print "Activate debug message on channel led_2"
+t.addChannel("led_2",out);
 print "Activate debug message on channel radio"
 t.addChannel("radio",out);
 print "Activate debug message on channel radio_send"
 t.addChannel("radio_send",out);
-print "Activate debug message on channel radio_rec\n\n"
+print "Activate debug message on channel radio_rec"
 t.addChannel("radio_rec",out);
-#print "Activate debug message on channel radio_pack"
-#t.addChannel("radio_pack",out);
-print "\n\n\n"
+print "Activate debug message on channel radio_pack"
+t.addChannel("radio_pack",out);
 
-print "******* CREATING NODES"
-for i in range(1, 8):
-    print ">>>Node:",i;
-    node =t.getNode(i);
-    time = 0*t.ticksPerSecond(); #instant at which each node should be turned on
-    node.bootAtTime(time);
-print "\n\n\n"
 
-print "******* CREATING LINKS (radio channels)"
+
+
+print "Creating node 1...";
+node1 =t.getNode(1);
+time1 = 0*t.ticksPerSecond(); #instant at which each node should be turned on
+node1.bootAtTime(time1);
+print ">>>Will boot at time",  time1/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 2...";
+node2 = t.getNode(2);
+time2 = 0*t.ticksPerSecond();
+node2.bootAtTime(time2);
+print ">>>Will boot at time", time2/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 3...";
+node3 = t.getNode(3);
+time3 = 0*t.ticksPerSecond();
+node3.bootAtTime(time3);
+print ">>>Will boot at time", time3/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 4...";
+node4 = t.getNode(4);
+time4 = 0*t.ticksPerSecond();
+node4.bootAtTime(time4);
+print ">>>Will boot at time", time4/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 5...";
+node5 = t.getNode(5);
+time5 = 0*t.ticksPerSecond();
+node5.bootAtTime(time5);
+print ">>>Will boot at time", time5/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 6...";
+node6 = t.getNode(6);
+time6 = 0*t.ticksPerSecond();
+node6.bootAtTime(time6);
+print ">>>Will boot at time", time6/t.ticksPerSecond(), "[sec]";
+
+print "Creating node 7...";
+node7 = t.getNode(7);
+time7 = 0*t.ticksPerSecond();
+node7.bootAtTime(time7);
+print ">>>Will boot at time", time7/t.ticksPerSecond(), "[sec]";
+
+
+print "Creating radio channels..."
 f = open(topofile, "r");
 lines = f.readlines()
 for line in lines:
-    s = line.split()
-    if (len(s) > 0):
-        print ">>>Setting radio channel from node ", s[0], " to node ", s[1], " with gain ", s[2], " dBm"
-        radio.add(int(s[0]), int(s[1]), float(s[2]))
-print "\n\n\n"
+  s = line.split()
+  if (len(s) > 0):
+    print ">>>Setting radio channel from node ", s[0], " to node ", s[1], " with gain ", s[2], " dBm"
+    radio.add(int(s[0]), int(s[1]), float(s[2]))
+
 
 #creation of channel model
 print "Initializing Closest Pattern Matching (CPM)...";
@@ -101,10 +138,9 @@ for i in range(1, 8):
     print ">>>Creating noise model for node:",i;
     t.getNode(i).createNoiseModel()
 
-print "Start simulation with TOSSIM! \n\n\n\n\n\n";
+print "Start simulation with TOSSIM! \n\n\n";
 
 for i in range(0,1200):
-    t.runNextEvent()
+	t.runNextEvent()
 	
 print "\n\n\nSimulation finished!";
-
