@@ -321,20 +321,6 @@ implementation {
 
               dbg("radio_pack","\t\tTABLE UPDATE at %d -> dest: %u next_hop: %u count: %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->value);
             }
-          }
-
-            /*VERIFY WAITING PACKET FOR ROUTE DISCOVERY TO END*/
-          if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest-1] != NULL) {
-            // routa encontrada
-            dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
-            dbg("radio_pack","\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
-            msg->src = waiting_data_packet->src;
-            msg->dest = waiting_data_packet->dest;
-            msg->type = waiting_data_packet->type;
-            msg->value = waiting_data_packet->value;
-
-            generate_send(msg->dest, bufPtr, DATA);
-            waiting_data_packet->dest=NULL;
 
             dbg("radio_pack","NODE %d\n",TOS_NODE_ID);
             dbg("radio_pack","+------+----------+-----------+\n");
@@ -354,6 +340,41 @@ implementation {
             dbg("radio_pack","+------+----------+-----------+\n");
             dbg("radio_pack","|  7   |    %u     |     %u     |\n", rt_next_hop[6],rt_hot_count[6]);
             dbg("radio_pack","+------+----------+-----------+\n\n");
+          }
+
+            /*VERIFY WAITING PACKET FOR ROUTE DISCOVERY TO END*/
+          if (waiting_data_packet->dest != NULL && rt_next_hop[waiting_data_packet->dest-1] != NULL) {
+            // routa encontrada
+            dbg("radio_rec", "\n..::DATA PACKET DESTINATIION FOUND\n");
+            dbg("radio_pack","\t\tSending data packet... %u hops from %d to %u\n",rt_hot_count[waiting_data_packet->dest-1], TOS_NODE_ID, waiting_data_packet->dest);
+            msg->src = waiting_data_packet->src;
+            msg->dest = waiting_data_packet->dest;
+            msg->type = waiting_data_packet->type;
+            msg->value = waiting_data_packet->value;
+
+            generate_send(msg->dest, bufPtr, DATA);
+            route_rep_sent = true;
+            waiting_data_packet->dest=NULL;
+            /*
+            dbg("radio_pack","NODE %d\n",TOS_NODE_ID);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","| dest | next_hop | hop_count |\n");
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  1   |    %u     |     %u     |\n", rt_next_hop[0],rt_hot_count[0]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  2   |    %u     |     %u     |\n", rt_next_hop[1],rt_hot_count[1]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  3   |    %u     |     %u     |\n", rt_next_hop[2],rt_hot_count[2]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  4   |    %u     |     %u     |\n", rt_next_hop[3],rt_hot_count[3]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  5   |    %u     |     %u     |\n", rt_next_hop[4],rt_hot_count[4]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  6   |    %u     |     %u     |\n", rt_next_hop[5],rt_hot_count[5]);
+            dbg("radio_pack","+------+----------+-----------+\n");
+            dbg("radio_pack","|  7   |    %u     |     %u     |\n", rt_next_hop[6],rt_hot_count[6]);
+            dbg("radio_pack","+------+----------+-----------+\n\n");
+            */
 
            
           } else {
