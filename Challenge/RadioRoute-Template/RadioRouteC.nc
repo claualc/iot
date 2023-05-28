@@ -50,6 +50,7 @@ implementation {
   // the index of the arrays is the destination address
   uint16_t rt_next_hop[7]={NULL,NULL,NULL,NULL,NULL,NULL,NULL};
   uint16_t rt_hot_count[7]={NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+  uint16_t route_req_dest_node = 0;
   
   /*****  ROUTER VARIABLES  *****/
   bool route_req_sent=FALSE;
@@ -166,12 +167,14 @@ implementation {
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
           } else if (msg->type == ROUTE_REQ) {
+              route_req_dest_node = msg->dest
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REQ generated from %u to %u\n",TOS_NODE_ID, msg->src,msg->dest);
           } else if (msg->type == ROUTE_REP){
               // add +1 in hopcount before sending
               msg->src = TOS_NODE_ID;
               msg->value = msg->value + 1;
-              msg->dest = AM_BROADCAST_ADDR;
+              if (route_req_dest_node == 0) msg->dest = TOS_NODE_ID
+              else msg->dest = route_req_dest_node;
               dbg("radio_rec", "..::SEND at %d -> ROUTE_REPLY generated from %u to %u (broadcast)\n",TOS_NODE_ID, msg->src,msg->dest);
           } 
         }
