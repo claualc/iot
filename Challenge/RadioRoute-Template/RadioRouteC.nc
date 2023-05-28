@@ -202,6 +202,24 @@ implementation {
         dbg("radio_rec", "..::SEND at %d -> Route discovery generated from %u to %u type %u\n",TOS_NODE_ID, msg->src,msg->dest,msg->type);
       } else {
           if (msg->type == DATA) {
+              dbg("radio_pack","NODE %d\n",TOS_NODE_ID);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","| dest | next_hop | hop_count |\n");
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  1   |    %u     |     %u     |\n", rt_next_hop[0],rt_hot_count[0]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  2   |    %u     |     %u     |\n", rt_next_hop[1],rt_hot_count[1]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  3   |    %u     |     %u     |\n", rt_next_hop[2],rt_hot_count[2]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  4   |    %u     |     %u     |\n", rt_next_hop[3],rt_hot_count[3]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  5   |    %u     |     %u     |\n", rt_next_hop[4],rt_hot_count[4]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  6   |    %u     |     %u     |\n", rt_next_hop[5],rt_hot_count[5]);
+              dbg("radio_pack","+------+----------+-----------+\n");
+              dbg("radio_pack","|  7   |    %u     |     %u     |\n", rt_next_hop[6],rt_hot_count[6]);
+              dbg("radio_pack","+------+----------+-----------+\n\n");
               address = rt_next_hop[msg->dest-1];
               data_sent = TRUE;
               dbg("radio_rec", "..::SEND at %d -> DATA generated from %u to %u, next hop %u\n",TOS_NODE_ID, msg->src,msg->dest,address);
@@ -223,7 +241,7 @@ implementation {
         }
 
     if (call AMSend.send(address, packett, sizeof(radio_route_msg_t)) == SUCCESS) {
-      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address);	
+      dbg("radio_send", "\t\tSENT SUCCESS from %d to %u type \n", TOS_NODE_ID, address, msg->type);	
     }
   }
 
