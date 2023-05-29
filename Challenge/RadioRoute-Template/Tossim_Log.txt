@@ -1,0 +1,221 @@
+********************************************
+*                                          *
+*             TOSSIM Script                *
+*                                          *
+********************************************
+Initializing mac....
+Initializing radio channels....
+    using topology file: topology.txt
+    using noise file: meyer-heavy.txt
+Initializing simulator....
+Activate debug message on channel init
+Activate debug message on channel boot
+Activate debug message on channel timer
+Activate debug message on channel led_0
+Activate debug message on channel led_1
+Activate debug message on channel led_2
+Activate debug message on channel radio
+Activate debug message on channel radio_send
+Activate debug message on channel radio_rec
+Activate debug message on channel radio_pack
+Activate debug message on channel led_status
+Creating node 1...
+>>>Will boot at time 0 [sec]
+Creating node 2...
+>>>Will boot at time 0 [sec]
+Creating node 3...
+>>>Will boot at time 0 [sec]
+Creating node 4...
+>>>Will boot at time 0 [sec]
+Creating node 5...
+>>>Will boot at time 0 [sec]
+Creating node 6...
+>>>Will boot at time 0 [sec]
+Creating node 7...
+>>>Will boot at time 0 [sec]
+Creating radio channels...
+>>>Setting radio channel from node  1  to node  2  with gain  -60.0  dBm
+>>>Setting radio channel from node  2  to node  1  with gain  -60.0  dBm
+>>>Setting radio channel from node  1  to node  3  with gain  -60.0  dBm
+>>>Setting radio channel from node  3  to node  1  with gain  -60.0  dBm
+>>>Setting radio channel from node  2  to node  4  with gain  -60.0  dBm
+>>>Setting radio channel from node  4  to node  2  with gain  -60.0  dBm
+>>>Setting radio channel from node  4  to node  3  with gain  -60.0  dBm
+>>>Setting radio channel from node  3  to node  4  with gain  -60.0  dBm
+>>>Setting radio channel from node  5  to node  3  with gain  -60.0  dBm
+>>>Setting radio channel from node  3  to node  5  with gain  -60.0  dBm
+>>>Setting radio channel from node  4  to node  6  with gain  -60.0  dBm
+>>>Setting radio channel from node  6  to node  4  with gain  -60.0  dBm
+>>>Setting radio channel from node  5  to node  6  with gain  -60.0  dBm
+>>>Setting radio channel from node  6  to node  5  with gain  -60.0  dBm
+>>>Setting radio channel from node  5  to node  7  with gain  -60.0  dBm
+>>>Setting radio channel from node  7  to node  5  with gain  -60.0  dBm
+>>>Setting radio channel from node  7  to node  6  with gain  -60.0  dBm
+>>>Setting radio channel from node  6  to node  7  with gain  -60.0  dBm
+Initializing Closest Pattern Matching (CPM)...
+Reading noise model data file: meyer-heavy.txt
+Loading:##Done!
+>>>Creating noise model for node: 1
+>>>Creating noise model for node: 2
+>>>Creating noise model for node: 3
+>>>Creating noise model for node: 4
+>>>Creating noise model for node: 5
+>>>Creating noise model for node: 6
+>>>Creating noise model for node: 7
+Start simulation with TOSSIM! 
+
+
+
+DEBUG (1): 
+Node booted 1.
+
+DEBUG (7): 
+Node booted 7.
+
+DEBUG (3): 
+Node booted 3.
+
+DEBUG (6): 
+Node booted 6.
+
+DEBUG (2): 
+Node booted 2.
+
+DEBUG (5): 
+Node booted 5.
+
+DEBUG (4): 
+Node booted 4.
+
+DEBUG (7): 
+Radio on on node 7!
+
+DEBUG (6): 
+Radio on on node 6!
+
+DEBUG (1): 
+Radio on on node 1!
+
+DEBUG (3): 
+Radio on on node 3!
+
+DEBUG (4): 
+Radio on on node 4!
+
+DEBUG (2): 
+Radio on on node 2!
+
+DEBUG (5): 
+Radio on on node 5!
+
+DEBUG (1): 		Packet queue in the waiting list at 1 dest 7 src 1 type 0
+DEBUG (1): ..::SEND at 1 -> Route discovery generated from 1 to 7 type 1
+DEBUG (3): Node 3 LED status: 010
+DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 1 type 1
+DEBUG (3): 		ROUTE_REQ to node 7 not found at 3
+DEBUG (2): Node 2 LED status: 010
+DEBUG (2): ..::RECEIVE at 2 -> dest 7 src 1 type 1
+DEBUG (2): 		ROUTE_REQ to node 7 not found at 2
+DEBUG (2): ..::SEND at 2 -> ROUTE_REQ generated from 1 to 7
+DEBUG (4): Node 4 LED status: 010
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 1 type 1
+DEBUG (4): 		ROUTE_REQ to node 7 not found at 4
+DEBUG (1): Node 1 LED status: 010
+DEBUG (3): ..::SEND at 3 -> ROUTE_REQ generated from 1 to 7
+DEBUG (5): Node 5 LED status: 010
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 1 type 1
+DEBUG (5): 		ROUTE_REQ to node 7 not found at 5
+DEBUG (4): Node 4 LED status: 110
+DEBUG (1): Node 1 LED status: 110
+DEBUG (4): ..::SEND at 4 -> ROUTE_REQ generated from 1 to 7
+DEBUG (6): Node 6 LED status: 010
+DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 1 type 1
+DEBUG (6): 		ROUTE_REQ to node 7 not found at 6
+DEBUG (3): Node 3 LED status: 110
+DEBUG (2): Node 2 LED status: 110
+DEBUG (5): ..::SEND at 5 -> ROUTE_REQ generated from 1 to 7
+DEBUG (7): Node 7 LED status: 010
+DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 1
+DEBUG (7): 		ROUTE founded at node 7
+DEBUG (6): Node 6 LED status: 110
+DEBUG (3): Node 3 LED status: 010
+DEBUG (6): ..::SEND at 6 -> ROUTE_REQ generated from 1 to 7
+DEBUG (7): Node 7 LED status: 110
+DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 1
+DEBUG (5): Node 5 LED status: 110
+DEBUG (4): Node 4 LED status: 010
+DEBUG (7): ..::SEND at 7 -> ROUTE_REPLY generated from 7 to 7 (broadcast)
+DEBUG (6): Node 6 LED status: 010
+DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 7 type 2
+DEBUG (6): 		TABLE UPDATE at 6 -> dest: 7 next_hop: 7 count: 1
+DEBUG (5): Node 5 LED status: 010
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 7 type 2
+DEBUG (5): 		TABLE UPDATE at 5 -> dest: 7 next_hop: 7 count: 1
+DEBUG (5): ..::SEND at 5 -> ROUTE_REPLY generated from 5 to 7 (broadcast)
+DEBUG (7): Node 7 LED status: 010
+DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 5 type 2
+DEBUG (7): 		TABLE UPDATE at 7 -> dest: 5 next_hop: 5 count: 1
+DEBUG (7): 		TABLE UPDATE at 7 -> dest: 7 next_hop: 5 count: 2
+DEBUG (6): Node 6 LED status: 000
+DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 5 type 2
+DEBUG (6): 		TABLE UPDATE at 6 -> dest: 5 next_hop: 5 count: 1
+DEBUG (3): Node 3 LED status: 000
+DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 5 type 2
+DEBUG (3): 		TABLE UPDATE at 3 -> dest: 5 next_hop: 5 count: 1
+DEBUG (3): 		TABLE UPDATE at 3 -> dest: 7 next_hop: 5 count: 2
+DEBUG (6): ..::SEND at 6 -> ROUTE_REPLY generated from 6 to 7 (broadcast)
+DEBUG (7): Node 7 LED status: 000
+DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 6 type 2
+DEBUG (7): 		TABLE UPDATE at 7 -> dest: 6 next_hop: 6 count: 1
+DEBUG (5): Node 5 LED status: 000
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 6 type 2
+DEBUG (5): 		TABLE UPDATE at 5 -> dest: 6 next_hop: 6 count: 1
+DEBUG (4): Node 4 LED status: 000
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 6 type 2
+DEBUG (4): 		TABLE UPDATE at 4 -> dest: 6 next_hop: 6 count: 1
+DEBUG (4): 		TABLE UPDATE at 4 -> dest: 7 next_hop: 6 count: 2
+DEBUG (3): ..::SEND at 3 -> ROUTE_REPLY generated from 3 to 7 (broadcast)
+DEBUG (5): Node 5 LED status: 010
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 3 type 2
+DEBUG (5): 		TABLE UPDATE at 5 -> dest: 3 next_hop: 3 count: 1
+DEBUG (4): Node 4 LED status: 010
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 3 type 2
+DEBUG (4): 		TABLE UPDATE at 4 -> dest: 3 next_hop: 3 count: 1
+DEBUG (1): Node 1 LED status: 010
+DEBUG (1): ..::RECEIVE at 1 -> dest 7 src 3 type 2
+DEBUG (1): 		TABLE UPDATE at 1 -> dest: 3 next_hop: 3 count: 1
+DEBUG (1): 		TABLE UPDATE at 1 -> dest: 7 next_hop: 3 count: 3
+DEBUG (1): 
+..::DATA PACKET DESTINATIION FOUND
+DEBUG (1): 		Sending data packet... 3 hops from 1 to 7
+DEBUG (1): ..::SEND at 1 -> DATA generated from 1 to 7, next hop 3
+DEBUG (3): Node 3 LED status: 010
+DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 1 type 0
+DEBUG (4): ..::SEND at 4 -> ROUTE_REPLY generated from 4 to 7 (broadcast)
+DEBUG (6): Node 6 LED status: 010
+DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 4 type 2
+DEBUG (6): 		TABLE UPDATE at 6 -> dest: 4 next_hop: 4 count: 1
+DEBUG (3): Node 3 LED status: 011
+DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 4 type 2
+DEBUG (3): 		TABLE UPDATE at 3 -> dest: 4 next_hop: 4 count: 1
+DEBUG (2): Node 2 LED status: 010
+DEBUG (2): ..::RECEIVE at 2 -> dest 7 src 4 type 2
+DEBUG (2): 		TABLE UPDATE at 2 -> dest: 4 next_hop: 4 count: 1
+DEBUG (2): 		TABLE UPDATE at 2 -> dest: 7 next_hop: 4 count: 3
+DEBUG (3): ..::SEND at 3 -> DATA generated from 1 to 7, next hop 5
+DEBUG (5): Node 5 LED status: 011
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 1 type 0
+DEBUG (2): ..::SEND at 2 -> ROUTE_REPLY generated from 2 to 7 (broadcast)
+DEBUG (4): Node 4 LED status: 011
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 2 type 2
+DEBUG (4): 		TABLE UPDATE at 4 -> dest: 2 next_hop: 2 count: 1
+DEBUG (1): Node 1 LED status: 000
+DEBUG (1): ..::RECEIVE at 1 -> dest 7 src 2 type 2
+DEBUG (1): 		TABLE UPDATE at 1 -> dest: 2 next_hop: 2 count: 1
+DEBUG (5): ..::SEND at 5 -> DATA generated from 1 to 7, next hop 7
+DEBUG (7): Node 7 LED status: 010
+DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 0
+DEBUG (7): ..::DATA RECEIVED IN DESTINATION SUCCESSFULLY!!!
+
+
+Simulation finished!
