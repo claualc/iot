@@ -134,14 +134,12 @@ DEBUG (6): 		ROUTE_REQ to node 7 not found at 6
 DEBUG (3): Node 3 LED status: 110
 DEBUG (2): Node 2 LED status: 110
 DEBUG (5): ..::SEND at 5 -> ROUTE_REQ generated from 1 to 7
-DEBUG (7): Node 7 LED status: 010
-DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 1
-DEBUG (7): 		ROUTE founded at node 7
 DEBUG (6): Node 6 LED status: 110
 DEBUG (3): Node 3 LED status: 010
 DEBUG (6): ..::SEND at 6 -> ROUTE_REQ generated from 1 to 7
-DEBUG (7): Node 7 LED status: 110
+DEBUG (7): Node 7 LED status: 010
 DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 1
+DEBUG (7): 		ROUTE founded at node 7
 DEBUG (5): Node 5 LED status: 110
 DEBUG (4): Node 4 LED status: 010
 DEBUG (7): ..::SEND at 7 -> ROUTE_REPLY generated from 7 to 7 (broadcast)
@@ -152,19 +150,15 @@ DEBUG (5): Node 5 LED status: 010
 DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 7 type 2
 DEBUG (5): 		TABLE UPDATE at 5 -> dest: 7 next_hop: 7 count: 1
 DEBUG (5): ..::SEND at 5 -> ROUTE_REPLY generated from 5 to 7 (broadcast)
-DEBUG (7): Node 7 LED status: 010
+DEBUG (7): Node 7 LED status: 110
 DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 5 type 2
 DEBUG (7): 		TABLE UPDATE at 7 -> dest: 5 next_hop: 5 count: 1
 DEBUG (7): 		TABLE UPDATE at 7 -> dest: 7 next_hop: 5 count: 2
 DEBUG (6): Node 6 LED status: 000
 DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 5 type 2
 DEBUG (6): 		TABLE UPDATE at 6 -> dest: 5 next_hop: 5 count: 1
-DEBUG (3): Node 3 LED status: 000
-DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 5 type 2
-DEBUG (3): 		TABLE UPDATE at 3 -> dest: 5 next_hop: 5 count: 1
-DEBUG (3): 		TABLE UPDATE at 3 -> dest: 7 next_hop: 5 count: 2
 DEBUG (6): ..::SEND at 6 -> ROUTE_REPLY generated from 6 to 7 (broadcast)
-DEBUG (7): Node 7 LED status: 000
+DEBUG (7): Node 7 LED status: 010
 DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 6 type 2
 DEBUG (7): 		TABLE UPDATE at 7 -> dest: 6 next_hop: 6 count: 1
 DEBUG (5): Node 5 LED status: 000
@@ -174,48 +168,52 @@ DEBUG (4): Node 4 LED status: 000
 DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 6 type 2
 DEBUG (4): 		TABLE UPDATE at 4 -> dest: 6 next_hop: 6 count: 1
 DEBUG (4): 		TABLE UPDATE at 4 -> dest: 7 next_hop: 6 count: 2
-DEBUG (3): ..::SEND at 3 -> ROUTE_REPLY generated from 3 to 7 (broadcast)
-DEBUG (5): Node 5 LED status: 010
-DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 3 type 2
-DEBUG (5): 		TABLE UPDATE at 5 -> dest: 3 next_hop: 3 count: 1
-DEBUG (4): Node 4 LED status: 010
-DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 3 type 2
-DEBUG (4): 		TABLE UPDATE at 4 -> dest: 3 next_hop: 3 count: 1
-DEBUG (1): Node 1 LED status: 010
-DEBUG (1): ..::RECEIVE at 1 -> dest 7 src 3 type 2
-DEBUG (1): 		TABLE UPDATE at 1 -> dest: 3 next_hop: 3 count: 1
-DEBUG (1): 		TABLE UPDATE at 1 -> dest: 7 next_hop: 3 count: 3
-DEBUG (1): 
-..::DATA PACKET DESTINATIION FOUND
-DEBUG (1): 		Sending data packet... 3 hops from 1 to 7
-DEBUG (1): ..::SEND at 1 -> DATA generated from 1 to 7, next hop 3
-DEBUG (3): Node 3 LED status: 010
-DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 1 type 0
 DEBUG (4): ..::SEND at 4 -> ROUTE_REPLY generated from 4 to 7 (broadcast)
 DEBUG (6): Node 6 LED status: 010
 DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 4 type 2
 DEBUG (6): 		TABLE UPDATE at 6 -> dest: 4 next_hop: 4 count: 1
-DEBUG (3): Node 3 LED status: 011
+DEBUG (3): Node 3 LED status: 000
 DEBUG (3): ..::RECEIVE at 3 -> dest 7 src 4 type 2
 DEBUG (3): 		TABLE UPDATE at 3 -> dest: 4 next_hop: 4 count: 1
+DEBUG (3): 		TABLE UPDATE at 3 -> dest: 7 next_hop: 4 count: 3
 DEBUG (2): Node 2 LED status: 010
 DEBUG (2): ..::RECEIVE at 2 -> dest 7 src 4 type 2
 DEBUG (2): 		TABLE UPDATE at 2 -> dest: 4 next_hop: 4 count: 1
 DEBUG (2): 		TABLE UPDATE at 2 -> dest: 7 next_hop: 4 count: 3
-DEBUG (3): ..::SEND at 3 -> DATA generated from 1 to 7, next hop 5
-DEBUG (5): Node 5 LED status: 011
-DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 1 type 0
 DEBUG (2): ..::SEND at 2 -> ROUTE_REPLY generated from 2 to 7 (broadcast)
-DEBUG (4): Node 4 LED status: 011
+DEBUG (4): Node 4 LED status: 010
 DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 2 type 2
 DEBUG (4): 		TABLE UPDATE at 4 -> dest: 2 next_hop: 2 count: 1
-DEBUG (1): Node 1 LED status: 000
+DEBUG (1): Node 1 LED status: 010
 DEBUG (1): ..::RECEIVE at 1 -> dest 7 src 2 type 2
 DEBUG (1): 		TABLE UPDATE at 1 -> dest: 2 next_hop: 2 count: 1
-DEBUG (5): ..::SEND at 5 -> DATA generated from 1 to 7, next hop 7
-DEBUG (7): Node 7 LED status: 010
+DEBUG (1): 		TABLE UPDATE at 1 -> dest: 7 next_hop: 2 count: 4
+DEBUG (1): 
+..::DATA PACKET DESTINATIION FOUND
+DEBUG (1): 		Sending data packet... 4 hops from 1 to 7
+DEBUG (1): ..::SEND at 1 -> DATA generated from 1 to 7, next hop 2
+DEBUG (2): Node 2 LED status: 000
+DEBUG (2): ..::RECEIVE at 2 -> dest 7 src 1 type 0
+DEBUG (3): ..::SEND at 3 -> ROUTE_REPLY generated from 3 to 7 (broadcast)
+DEBUG (5): Node 5 LED status: 010
+DEBUG (5): ..::RECEIVE at 5 -> dest 7 src 3 type 2
+DEBUG (5): 		TABLE UPDATE at 5 -> dest: 3 next_hop: 3 count: 1
+DEBUG (4): Node 4 LED status: 011
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 3 type 2
+DEBUG (4): 		TABLE UPDATE at 4 -> dest: 3 next_hop: 3 count: 1
+DEBUG (1): Node 1 LED status: 000
+DEBUG (1): ..::RECEIVE at 1 -> dest 7 src 3 type 2
+DEBUG (1): 		TABLE UPDATE at 1 -> dest: 3 next_hop: 3 count: 1
+DEBUG (2): ..::SEND at 2 -> DATA generated from 1 to 7, next hop 4
+DEBUG (4): Node 4 LED status: 001
+DEBUG (4): ..::RECEIVE at 4 -> dest 7 src 1 type 0
+DEBUG (4): ..::SEND at 4 -> DATA generated from 1 to 7, next hop 6
+DEBUG (6): Node 6 LED status: 011
+DEBUG (6): ..::RECEIVE at 6 -> dest 7 src 1 type 0
+DEBUG (6): ..::SEND at 6 -> DATA generated from 1 to 7, next hop 7
+DEBUG (7): Node 7 LED status: 000
 DEBUG (7): ..::RECEIVE at 7 -> dest 7 src 1 type 0
-DEBUG (7): ..::DATA RECEIVED IN DESTINATION SUCCESSFULLY!!!
+DEBUG (7): ..::DATA RECEIVED IN DESTINATION SUCCESSFULLY!!! Value: 5
 
 
 Simulation finished!
