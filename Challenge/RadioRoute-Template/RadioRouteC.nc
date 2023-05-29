@@ -121,7 +121,7 @@ implementation {
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
       dbg("radio","\nRadio on on node %d!\n\n", TOS_NODE_ID);
-      call Timer1.startOneShot(1);
+      call Timer1.startOneShot(5000);
     }
     else {
       dbgerror("radio", "\nRadio failed to start, retrying...\n\n");
@@ -139,6 +139,7 @@ implementation {
 
   event void Timer1.fired() {
 
+    // If current node is 1, try to send data message to node 7
     if (TOS_NODE_ID == 1) {
       radio_route_msg_t* msg = (radio_route_msg_t*)call Packet.getPayload(&packet, sizeof(radio_route_msg_t));
       msg->type = DATA;
@@ -210,6 +211,7 @@ implementation {
           // Data message type
           if (msg->type == DATA) {
               address = rt_next_hop[msg->dest-1];
+              msg->value = 5;
               data_sent = TRUE;
               dbg("radio_rec", "..::SEND at %d -> DATA generated from %u to %u, next hop %u\n",TOS_NODE_ID, msg->src,msg->dest,address);
           
@@ -260,7 +262,7 @@ implementation {
         dbg("radio_rec", "..::RECEIVE at %d -> dest %u src %u type %u\n",TOS_NODE_ID, msg->dest,msg->src,msg->type);
         // If destination node is the current node log success
         if (msg->dest == TOS_NODE_ID) {
-          dbg("radio_rec", "..::DATA RECEIVED IN DESTINATION SUCCESSFULLY!!!");
+          dbg("radio_rec", "..::DATA RECEIVED IN DESTINATION SUCCESSFULLY!!! Value: %u",msg->value);
         // Or send message to next hop
         } else {
           generate_send(rt_next_hop[msg->dest-1], bufPtr, DATA);
